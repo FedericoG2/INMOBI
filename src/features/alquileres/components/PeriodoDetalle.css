@@ -1,0 +1,28 @@
+.periodo-detalle { display: flex; flex-direction: column; gap: 1.25rem; }
+.periodo-estado { padding: 2rem; text-align: center; color: #666; }
+.periodo-error { color: #dc2626; }
+.periodo-error-box { padding: 0.875rem 1rem; background: #fee2e2; color: #991b1b; border-radius: 8px; }
+.detalle-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.detalle-header h2 { margin: 0; font-size: 1.4rem; }
+.detalle-subtitulo { margin: 0.35rem 0 0; color: #6b7280; }
+.estado-badge { padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+.estado-pendiente { background: #ffedd5; color: #9a3412; }
+.estado-pagado { background: #dcfce7; color: #166534; }
+.detalle-seccion { padding: 1rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; }
+.detalle-seccion h3 { margin: 0 0 0.75rem; font-size: 1rem; }
+.detalle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; }
+.detalle-grid strong { display: block; color: #6b7280; font-size: 0.8rem; margin-bottom: 0.2rem; }
+.detalle-grid p, .detalle-nota, .detalle-vacio, .detalle-ayuda { margin: 0; }
+.detalle-nota, .detalle-vacio, .detalle-ayuda { color: #6b7280; margin-top: 0.75rem; }
+.comprobantes-lista { display: flex; flex-direction: column; gap: 0.75rem; }
+.comprobante-item { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 6px; }
+.comprobante-nombre { font-weight: 600; display: flex; gap: 0.5rem; align-items: center; }
+.comprobante-meta { color: #6b7280; font-size: 0.85rem; margin-top: 0.2rem; }
+.comprobante-acciones { display: flex; gap: 0.5rem; align-items: center; }
+.comprobante-form { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+.form-group label { font-size: 0.85rem; font-weight: 600; }
+.form-group input, .form-group textarea { padding: 0.5rem 0.7rem; border: 1px solid #d1d5db; border-radius: 6px; font: inherit; }
+.form-actions, .detalle-acciones { display: flex; justify-content: flex-end; gap: 0.75rem; }
+.detalle-acciones { padding-top: 0.5rem; }

@@ -1,0 +1,111 @@
+.contratos-page { max-width: 1280px; }
+.celda-principal { font-weight: 650; }
+.celda-secundaria { color: var(--muted); font-size: 0.82rem; margin-top: 0.15rem; }
+.celda-monto { font-weight: 700; white-space: nowrap; }
+
+.ct-fila { cursor: pointer; }
+
+.ct-principal {
+  color: #0f172a;
+  font-weight: 650;
+}
+
+.ct-secundaria {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.ct-pildora {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ct-codigo {
+  color: var(--blue-700);
+}
+
+.ct-importe { white-space: nowrap; }
+
+/* Todas las celdas tienen dos renglones del mismo alto, para que queden en línea entre columnas */
+.contratos-tabla th,
+.contratos-tabla td { padding-left: 1rem; padding-right: 1rem; text-align: left; vertical-align: middle; }
+.contratos-tabla .ct-principal { min-height: 24px; line-height: 24px; }
+.contratos-tabla .ct-secundaria,
+.contratos-tabla .ct-pildora { box-sizing: border-box; height: 24px; margin-top: 4px; line-height: 24px; white-space: nowrap; }
+.contratos-tabla .ct-secundaria { flex-wrap: nowrap; }
+.contratos-tabla .ct-pildora { padding-top: 0; padding-bottom: 0; }
+.contratos-tabla .ct-chip,
+.contratos-tabla .ct-ajuste { line-height: 18px; }
+
+.contratos-tabla th.ct-estado,
+.contratos-tabla td.ct-estado { width: 1%; text-align: center; white-space: nowrap; }
+
+.ct-chip {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ct-chip-info { background: #e0f2fe; color: #0369a1; }
+.ct-chip-pronto { background: #fff7ed; color: #b45309; }
+
+.ct-rango { display: flex; align-items: center; gap: 0.45rem; white-space: nowrap; }
+.ct-rango span { color: #94a3b8; font-weight: 500; }
+
+.ct-ajuste {
+  padding: 0.05rem 0.45rem;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.contratos-tabla th.ct-acciones,
+.contratos-tabla td.ct-acciones {
+  width: 1%;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ct-encabezado-titulo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ct-encabezado-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--blue-700);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(29, 78, 216, 0.28);
+}
+
+/* Indicadores por estado, con los colores de las etiquetas */
+.ct-kpi-activo .ls-kpi-icono { background: var(--ok-bg); color: var(--ok); }
+.ct-kpi-programado .ls-kpi-icono { background: #e0f2fe; color: #0369a1; }
+.ct-kpi-finalizado .ls-kpi-icono { background: #f1f5f9; color: #475569; }

@@ -1,0 +1,111 @@
+.selper { position: relative; }
+
+.selper-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1e40af;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.selper-boton:hover:not(:disabled),
+.selper-boton.is-abierto { border-color: #2563eb; }
+.selper-boton:disabled { opacity: 0.6; cursor: default; }
+
+.selper-flecha {
+  width: 7px;
+  height: 7px;
+  margin: -3px 0 0 0.2rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.selper-boton.is-abierto .selper-flecha { margin-top: 3px; transform: rotate(225deg); }
+
+.selper-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  width: 264px;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.16);
+}
+
+.selper-anio {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.selper-anio strong { color: #0f172a; font-size: 0.95rem; }
+
+.selper-anio button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.selper-anio button:hover:not(:disabled) { border-color: #2563eb; color: #1d4ed8; }
+.selper-anio button:disabled { opacity: 0.35; cursor: default; }
+
+.selper-meses {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+}
+
+.selper-mes {
+  padding: 0.5rem 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #334155;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.selper-mes:hover:not(:disabled) { background: #eff6ff; color: #1d4ed8; }
+.selper-mes.is-vigente { border-color: #2563eb; color: #1d4ed8; }
+.selper-mes.is-elegido,
+.selper-mes.is-elegido:hover:not(:disabled) { background: #1d4ed8; color: #ffffff; }
+.selper-mes:disabled { background: transparent; color: #cbd5e1; cursor: default; }
+
+.selper-volver {
+  width: 100%;
+  margin-top: 0.65rem;
+  padding: 0.5rem 0 0.1rem;
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  background: transparent;
+  color: #1d4ed8;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.selper-volver:hover { text-decoration: underline; }

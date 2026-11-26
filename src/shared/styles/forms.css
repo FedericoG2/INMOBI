@@ -1,0 +1,528 @@
+/* Estilo compartido para los formularios de carga (Propietarios, Inquilinos, Propiedades).
+   Todo va scopeado a .form-section para ganar en especificidad a reglas globales de otros CSS. */
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.form-section + .form-section {
+  margin-top: 1rem;
+}
+
+.form-section .form-section-title {
+  margin: 0;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue-700);
+}
+
+.form-section .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-section .form-group label {
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: #334155;
+}
+
+.form-section .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-section .form-group input,
+.form-section .form-group select,
+.form-section .form-group textarea {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.92rem;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-section .form-group input:hover:not(:disabled):not(:focus),
+.form-section .form-group select:hover:not(:disabled):not(:focus),
+.form-section .form-group textarea:hover:not(:disabled):not(:focus) {
+  border-color: #94a3b8;
+}
+
+.form-section .form-group input:focus,
+.form-section .form-group select:focus,
+.form-section .form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.form-section .form-group input:disabled,
+.form-section .form-group select:disabled,
+.form-section .form-group textarea:disabled {
+  border-color: #e2e8f0;
+  background: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.form-section .form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+  padding: 10px 12px;
+}
+
+.form-section .form-group input.input-error,
+.form-section .form-group select.input-error,
+.form-section .form-group textarea.input-error {
+  border-color: var(--danger);
+}
+
+.form-section .field-error {
+  color: var(--danger);
+  font-size: 0.82rem;
+}
+
+.form-section .form-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.form-section .form-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.form-section .form-aviso svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.form-section .form-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 0.85rem;
+}
+
+.form-section .form-info strong {
+  font-weight: 700;
+}
+
+.form-section .form-row.form-row-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.form-section .form-group input[type="file"] {
+  padding: 6px 8px;
+  line-height: 1.6;
+}
+
+.form-error-global {
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  background: var(--danger-bg);
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.form-warning {
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  background: var(--warn-bg);
+  color: var(--warn);
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+/* Segmented control (reemplaza los radios simples de "Tipo de persona") */
+.form-section .radio-group {
+  display: inline-flex;
+  gap: 0.25rem;
+  background: var(--blue-50);
+  padding: 4px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.form-section .radio-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.form-section .radio-label input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-section .radio-label span {
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  color: var(--blue-700);
+  transition: background 0.15s, color 0.15s;
+}
+
+.form-section .radio-label input[type="radio"]:checked + span {
+  background: var(--blue-700);
+  color: white;
+  box-shadow: 0 1px 3px rgba(29, 78, 216, 0.3);
+}
+
+.form-section .radio-label input[type="radio"]:disabled + span {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* Wizard (indicador de pasos) */
+.wizard-steps {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.wizard-step {
+  flex: 1;
+  position: relative;
+}
+
+.wizard-step button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: default;
+}
+
+.wizard-step.is-done button {
+  cursor: pointer;
+  color: #334155;
+}
+
+.wizard-step.is-done button:hover {
+  border-color: #94a3b8;
+}
+
+.wizard-step.is-active button {
+  border-color: var(--blue-700);
+  background: var(--blue-50);
+  color: var(--blue-700);
+}
+
+.wizard-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.wizard-step.is-active .wizard-step-num {
+  background: var(--blue-700);
+  color: #ffffff;
+}
+
+.wizard-step.is-done .wizard-step-num {
+  background: var(--ok);
+  color: #ffffff;
+}
+
+.form-section .form-group textarea.textarea-compact {
+  min-height: 56px;
+}
+
+/* Barra de botones fija al pie del modal, para no tener que scrollear hasta ella */
+.form-actions.form-actions-sticky {
+  position: sticky;
+  bottom: -1.5rem;
+  z-index: 5;
+  margin-bottom: -1.5rem;
+  padding-bottom: 1.5rem;
+  background: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .form-actions.form-actions-sticky {
+    bottom: -1rem;
+    margin-bottom: -1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+/* Resumen (último paso del wizard) */
+.resumen-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section .resumen-encabezado .form-section-title {
+  padding: 0;
+  border: 0;
+}
+
+.resumen-editar {
+  padding: 0.2rem 0.6rem;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--blue-700);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resumen-editar:hover {
+  background: var(--blue-50);
+}
+
+.resumen-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.resumen-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--blue-100);
+  color: var(--blue-700);
+}
+
+.resumen-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.resumen-grid > .form-section {
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+}
+
+.resumen-grid .resumen-encabezado {
+  padding: 0.7rem 1rem;
+  border-bottom: 2px solid #bfdbfe;
+  background: #eff6ff;
+}
+
+.resumen-lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.resumen-lista > div {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.resumen-lista > div + div {
+  border-top: 1px solid #e2e8f0;
+}
+
+.resumen-lista dt {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.resumen-lista dd {
+  margin: 0;
+  color: #0f172a;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-align: left;
+  word-break: break-word;
+}
+
+.resumen-opcion {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.resumen-opcion .selectb-texto strong {
+  white-space: normal;
+  font-size: 0.92rem;
+}
+
+.resumen-lista .destacado {
+  background: #f8fafc;
+}
+
+.resumen-lista .destacado dd {
+  color: var(--blue-700);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .resumen-lista > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
+/* Wizard con panel lateral (calendario de aumentos) */
+.wizard-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.wizard-body.has-aside {
+  grid-template-columns: minmax(0, 1fr) 300px;
+}
+
+.wizard-aside {
+  position: sticky;
+  top: 0;
+}
+
+.wizard-aside .calendario-aumentos {
+  padding: 1.25rem 1.25rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.wizard-aside .calendario-aumentos h3 {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue-700);
+}
+
+.wizard-aside .calendario-aumentos ol {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+  max-height: 340px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.wizard-aside .calendario-aumentos li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e6ebf2;
+  border-radius: 8px;
+}
+
+.wizard-aside .calendario-aumentos li span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.wizard-aside .calendario-aumentos li strong {
+  color: #0f172a;
+}
+
+@media (max-width: 900px) {
+  .wizard-body.has-aside {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wizard-aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .wizard-step-title { display: none; }
+  .wizard-step.is-active .wizard-step-title { display: inline; }
+  .wizard-step { flex: 0 1 auto; }
+  .wizard-step.is-active { flex: 1; }
+}
+
+@media (max-width: 768px) {
+  .form-section .form-row,
+  .form-section .form-row.form-row-3 {
+    grid-template-columns: 1fr;
+  }
+}

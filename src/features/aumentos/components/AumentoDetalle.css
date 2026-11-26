@@ -1,0 +1,297 @@
+.aumento-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detalle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.detalle-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.detalle-subtitulo {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.detalle-estado-grupo {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.aumento-error-box {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.detalle-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detalle-seccion h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.detalle-grid label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.detalle-grid p {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.calculo-base {
+  margin: 0;
+  color: var(--muted);
+}
+
+.indice-faltante {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+
+.indice-faltante input {
+  width: 120px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 0.6rem;
+  background: white;
+}
+
+.calculo-resumen {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.calculo-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.calculo-fila span {
+  color: var(--text-muted);
+}
+
+.calculo-fila strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.calculo-resultado {
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.calculo-resultado strong {
+  color: var(--blue-700);
+  font-size: 1.125rem;
+}
+
+.calculo-final {
+  border-top: 2px solid var(--blue-700);
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.monto-final {
+  color: var(--blue-700);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.calculo-ipc ul,
+.calculo-icl {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.calculo-ipc p,
+.calculo-icl p {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.error-box ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--blue-600);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background: var(--bg);
+  color: var(--text-muted);
+}
+
+.form-group small {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.observaciones-texto {
+  margin: 0;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  font-size: 0.875rem;
+}
+
+.detalle-acciones {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  justify-content: flex-end;
+}
+
+.detalle-ayuda {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  color: #1e40af;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.modal-loading,
+.modal-error {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.ad-calculo { display: flex; flex-direction: column; gap: 0.75rem; }
+.ad-factor { margin: 0; color: #334155; font-size: 0.88rem; }
+.ad-observaciones { margin: 0; color: #334155; font-size: 0.9rem; white-space: pre-wrap; }
+.form-section.ad-formulario { background: #ffffff; }
+
+.ad-faltantes {
+  padding: 0.85rem 1rem;
+  border: 1px solid #fcd34d;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 0.88rem;
+}
+
+.ad-faltantes p { margin: 0 0 0.5rem; font-weight: 600; }
+.ad-faltante { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.4rem; }
+.ad-faltante span { min-width: 140px; }
+
+.ad-faltante input {
+  width: 130px;
+  height: 36px;
+  padding: 0 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.cd-acciones.ad-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Redondeo del monto: sin redondear, a la decena o a la centena */
+.ad-redondeo-titulo { color: #334155; font-size: 0.9rem; font-weight: 600; }
+.ad-redondeo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
+.ad-redondeo button { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.7rem 0.6rem; border: 1px solid #d1d5db; border-radius: 10px; background: #ffffff; font: inherit; cursor: pointer; }
+.ad-redondeo button:hover:not(:disabled) { border-color: #94a3b8; }
+.ad-redondeo small { color: var(--muted); font-size: 0.78rem; }
+.ad-redondeo strong { color: #0f172a; font-size: 1rem; white-space: nowrap; }
+.ad-redondeo button.is-elegido { border-color: #2563eb; background: #eff6ff; box-shadow: 0 0 0 1px #2563eb; }
+.ad-redondeo button.is-elegido strong { color: #1d4ed8; }
+@media (max-width: 520px) { .ad-redondeo { grid-template-columns: 1fr; } }
+
+/* Renglón que aparece en el cálculo cuando se elige un redondeo */
+.ad-redondeado { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.7rem; padding: 0.65rem 0.9rem; border: 1px solid #bfdbfe; border-radius: 10px; background: #eff6ff; text-align: left; }
+.ad-redondeado span { display: flex; flex-direction: column; color: #0f172a; font-size: 0.9rem; font-weight: 650; }
+.ad-redondeado small { color: #475569; font-size: 0.8rem; font-weight: 500; }
+.ad-redondeado > strong { color: #1d4ed8; font-size: 1.15rem; white-space: nowrap; }
