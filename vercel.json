@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/argly/:path*", "destination": "https://api.argly.com.ar/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

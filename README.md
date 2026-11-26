@@ -94,7 +94,7 @@ Los usuarios y sus roles también se administran en Supabase; no se publican cre
 | `npm run preview` | Vista previa de la compilación |
 | `npm run lint` | Análisis del código |
 
-En desarrollo, las consultas a Argly pasan por un proxy de Vite (`/argly`).
+Las consultas a Argly pasan por la ruta `/argly`, porque la API no admite llamadas directas desde el navegador: en desarrollo la resuelve el proxy de Vite y en producción las reescrituras de [vercel.json](vercel.json).
 
 ## Estructura
 

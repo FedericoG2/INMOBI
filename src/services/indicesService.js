@@ -1,7 +1,8 @@
 // Servicio para consultar índices IPC e ICL desde Argly
 import { supabase } from '../lib/supabase';
 
-const ARGLY_API_URL = import.meta.env.DEV ? '/argly' : 'https://api.argly.com.ar';
+// Argly no admite llamadas desde el navegador: se pasa por el proxy de Vite o de Vercel.
+const ARGLY_API_URL = '/argly';
 
 // Los indices publicados casi no cambian: se reutiliza cada respuesta unos minutos
 // para no esperar a Argly en cada refresco de pantalla.
