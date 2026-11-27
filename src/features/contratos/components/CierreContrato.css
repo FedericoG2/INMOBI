@@ -1,24 +1,5 @@
-/* Elegir entre finalizar o rescindir un contrato */
+/* Rescisión de un contrato */
 .cc { display: flex; flex-direction: column; gap: 0.9rem; text-align: left; }
-.cc-opciones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; }
-.cc-opcion { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.85rem 0.9rem; border: 1px solid #d1d5db; border-radius: 12px; background: #ffffff; font: inherit; text-align: left; cursor: pointer; }
-.cc-opcion:hover { border-color: #94a3b8; }
-.cc-opcion strong { display: block; color: #0f172a; font-size: 0.98rem; }
-.cc-opcion small { display: block; color: var(--muted); font-size: 0.82rem; }
-.cc-radio { flex-shrink: 0; box-sizing: border-box; width: 18px; height: 18px; margin-top: 0.15rem; border: 2px solid #cbd5e1; border-radius: 50%; background: #ffffff; }
-
-.cc-finalizar.is-elegida { border-color: var(--ok); background: var(--ok-bg); box-shadow: 0 0 0 1px var(--ok); }
-.cc-finalizar.is-elegida .cc-radio { border: 5px solid var(--ok); }
-.cc-rescindir.is-elegida { border-color: var(--danger); background: var(--danger-bg); box-shadow: 0 0 0 1px var(--danger); }
-.cc-rescindir.is-elegida .cc-radio { border: 5px solid var(--danger); }
-
-.cc-vacio { margin: 0; padding: 1.1rem; border: 1px dashed #cbd5e1; border-radius: 12px; color: var(--muted); font-size: 0.88rem; text-align: center; }
 .cc-explicacion { padding: 0.85rem 1rem; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc; color: #334155; font-size: 0.88rem; }
 .cc-explicacion p { margin: 0 0 0.55rem; color: #0f172a; }
 .cc-explicacion ul { display: flex; flex-direction: column; gap: 0.3rem; margin: 0; padding-left: 1.1rem; }
-.cc-aviso { display: flex; align-items: flex-start; gap: 0.55rem; margin: 0; padding: 0.65rem 0.8rem; border: 1px solid var(--warn); border-radius: 10px; background: var(--warn-bg); color: var(--warn); font-size: 0.85rem; }
-.cc-aviso svg { flex-shrink: 0; margin-top: 0.1rem; }
-
-@media (max-width: 520px) {
-  .cc-opciones { grid-template-columns: 1fr; }
-}

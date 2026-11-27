@@ -70,10 +70,11 @@ function formatearMonto(monto) {
 }
 
 const INDICADORES = [
-  { estado: ESTADO_CONTRATO.ACTIVO, titulo: 'Activos', ayuda: 'En curso', icono: 'check' },
   { estado: ESTADO_CONTRATO.PROGRAMADO, titulo: 'Programados', ayuda: 'Todavía no comenzaron', icono: 'calendar' },
+  { estado: ESTADO_CONTRATO.ACTIVO, titulo: 'Activos', ayuda: 'En curso', icono: 'check' },
   { estado: ESTADO_CONTRATO.FINALIZADO, titulo: 'Finalizados', ayuda: 'Cumplieron su plazo', icono: 'file' },
-
+  { estado: ESTADO_CONTRATO.RESCINDIDO, titulo: 'Rescindidos', ayuda: 'Cortados antes del plazo', icono: 'alert' },
+  { estado: ESTADO_CONTRATO.CANCELADO, titulo: 'Cancelados', ayuda: 'Anulados antes de comenzar', icono: 'close' },
 ];
 
 // Se traen todos: los indicadores cuentan cada estado y el filtro se aplica en pantalla.

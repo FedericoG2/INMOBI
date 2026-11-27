@@ -59,7 +59,7 @@ export function useAlquileres(filtros = {}) {
 
 export function useResumenCobranza() {
   const [resumen, setResumen] = useState(() => leerCache('cobranza')
-    ?? { mesEnCurso: null, vencimiento: null, pendientesMes: 0, vencidos: 0 });
+    ?? { mesEnCurso: null, vencimiento: null, pendientesMes: 0, adeudados: 0 });
   const [cargado, setCargado] = useState(() => Boolean(leerCache('cobranza')));
   const [version, setVersion] = useState(0);
 

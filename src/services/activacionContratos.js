@@ -1,21 +1,29 @@
 import { supabase } from '../lib/supabase';
 
-// Activa los contratos programados cuya fecha de inicio ya llegó. La base se encarga
-// de pasar la propiedad a 'alquilada' y de generar los períodos de alquiler.
+// Pone al día los estados que dependen de la fecha: activa los contratos programados
+// que ya empezaron y finaliza los activos que ya vencieron. La base se encarga del
+// resto (estado de la propiedad y períodos de alquiler). También pasa a Adeudado
+// el alquiler pendiente cuyo vencimiento ya pasó.
 // Se consulta una vez por día y por sesión; las pantallas lo esperan antes de listar.
 let pedido = null;
 
-export function activarContratosProgramados() {
+async function ejecutar(funcion) {
+  const { error } = await supabase.rpc(funcion);
+  if (error) throw new Error(error.message);
+}
+
+export function sincronizarContratos() {
   const hoy = new Date().toDateString();
 
   if (pedido?.dia !== hoy) {
-    const promesa = supabase.rpc('activar_contratos_programados').then(({ error }) => {
-      if (error) throw new Error(error.message);
-    }).catch((error) => {
-      // No impide ver las pantallas; el próximo listado vuelve a intentarlo.
-      console.error('No se pudieron activar los contratos programados:', error.message);
-      pedido = null;
-    });
+    const promesa = ejecutar('activar_contratos_programados')
+      .then(() => ejecutar('finalizar_contratos_vencidos'))
+      .then(() => ejecutar('marcar_periodos_adeudados'))
+      .catch((error) => {
+        // No impide ver las pantallas; el próximo listado vuelve a intentarlo.
+        console.error('No se pudieron actualizar los estados de los contratos:', error.message);
+        pedido = null;
+      });
     pedido = { dia: hoy, promesa };
   }
 

@@ -24,6 +24,11 @@ import { aumentosService } from '../../../services/aumentosService';
 import { SelectorPeriodo } from '../../aumentos/components/SelectorPeriodo';
 import './AlquileresPage.css';
 
+const INDICADORES = [
+  { estado: 'pendiente', titulo: 'Pendientes', icono: 'receipt' },
+  { estado: 'pagado', titulo: 'Pagados', icono: 'check' },
+];
+
 export function AlquileresPage() {
   const ubicacion = useLocation();
   const filtrosIniciales = ubicacion.state?.filtros;
@@ -33,7 +38,8 @@ export function AlquileresPage() {
   const claveVigente = `${vigente.anio}-${String(vigente.mes).padStart(2, '0')}`;
   const [filtros, setFiltros] = useState(() => ({ mes: claveVigente, estado: null, ...filtrosIniciales }));
   const [busqueda, setBusqueda] = useState('');
-  const { periodos, loading, error, recargar } = useAlquileres(filtros);
+  // Se traen todos los estados del período: los indicadores los cuentan y el filtro se aplica en pantalla.
+  const { periodos, loading, error, recargar } = useAlquileres({ ...filtros, estado: null });
   const [periodoSeleccionado, setPeriodoSeleccionado] = useState(null);
   const [anioElegido, mesElegido] = (filtros.mes || '').split('-').map(Number);
   const periodoElegido = filtros.mes ? { anio: anioElegido, mes: mesElegido } : null;
@@ -54,12 +60,14 @@ export function AlquileresPage() {
 
   const texto = busqueda.trim().toLowerCase();
   const hayFiltros = filtros.mes !== claveVigente || Boolean(filtros.estado) || Boolean(texto);
-  const kpiMesActivo = filtros.mes === resumen.mesEnCurso && filtros.estado === 'pendiente';
-  const kpiVencidosActivo = !filtros.mes && filtros.estado === 'vencido';
+  const kpiAdeudadosActivo = !filtros.mes && filtros.estado === 'adeudado';
 
-  const periodosFiltrados = periodos.filter((periodo) => {
-    // Al ver todos los meses tampoco se muestran períodos futuros.
-    if (`${periodo.periodo_anio}-${String(periodo.periodo_mes).padStart(2, '0')}` > claveVigente) return false;
+  // Al ver todos los meses tampoco se muestran períodos futuros.
+  const delPeriodo = periodos.filter((periodo) => (
+    `${periodo.periodo_anio}-${String(periodo.periodo_mes).padStart(2, '0')}` <= claveVigente
+  ));
+  const periodosFiltrados = delPeriodo.filter((periodo) => {
+    if (filtros.estado && periodo.estado !== filtros.estado) return false;
     if (!texto) return true;
     const contrato = periodo.contratos;
     const campos = [
@@ -74,9 +82,7 @@ export function AlquileresPage() {
 
   const paginacion = usePaginacion(periodosFiltrados, `${filtros.mes || 'todos'}|${filtros.estado || ''}|${texto}`);
 
-  const nombreEstado = filtros.estado === 'vencido'
-    ? 'vencidos'
-    : filtros.estado
+  const nombreEstado = filtros.estado
       ? `${ESTADO_PERIODO_ALQUILER_LABELS[filtros.estado].toLowerCase()}s`
       : '';
 
@@ -92,32 +98,38 @@ export function AlquileresPage() {
         </div>
       </div>
 
-      {resumenCargado && (
-        <div className="al-kpis">
-          {resumen.mesEnCurso && (
+      <div className="al-kpis">
+        {INDICADORES.map((indicador) => {
+          const activo = filtros.estado === indicador.estado;
+          return (
             <button
               type="button"
-              className={`al-kpi${kpiMesActivo ? ' is-activo' : ''}`}
-              onClick={() => setFiltros({ mes: resumen.mesEnCurso, estado: 'pendiente' })}
+              key={indicador.estado}
+              className={`al-kpi al-kpi-${indicador.estado}${activo ? ' is-activo' : ''}`}
+              onClick={() => cambiarFiltro('estado', activo ? '' : indicador.estado)}
+              aria-pressed={activo}
             >
-              <span className="al-kpi-icono"><Icon name="receipt" size={18} /></span>
-              <strong>{resumen.pendientesMes}</strong>
-              <span className="al-kpi-titulo">Pendientes de Pago</span>
-              <small>{etiquetaMes(resumen.mesEnCurso)}</small>
+              <span className="al-kpi-icono"><Icon name={indicador.icono} size={18} /></span>
+              <strong>{delPeriodo.filter((periodo) => periodo.estado === indicador.estado).length}</strong>
+              <span className="al-kpi-titulo">{indicador.titulo}</span>
+              <small>{filtros.mes ? etiquetaMes(filtros.mes) : 'Todos los meses'}</small>
             </button>
-          )}
+          );
+        })}
+        {resumenCargado && (
           <button
             type="button"
-            className={`al-kpi${resumen.vencidos > 0 ? ' es-alerta' : ' es-ok'}${kpiVencidosActivo ? ' is-activo' : ''}`}
-            onClick={() => setFiltros({ mes: null, estado: 'vencido' })}
+            className={`al-kpi${resumen.adeudados > 0 ? ' es-alerta' : ' es-ok'}${kpiAdeudadosActivo ? ' is-activo' : ''}`}
+            onClick={() => setFiltros(kpiAdeudadosActivo ? { mes: claveVigente, estado: null } : { mes: null, estado: 'adeudado' })}
+            aria-pressed={kpiAdeudadosActivo}
           >
             <span className="al-kpi-icono"><Icon name="alert" size={18} /></span>
-            <strong>{resumen.vencidos}</strong>
-            <span className="al-kpi-titulo">Pendientes de otros meses</span>
-            <small>{resumen.vencidos > 0 ? 'Ya vencidos: hay que reclamarlos' : 'No hay cobros atrasados'}</small>
+            <strong>{resumen.adeudados}</strong>
+            <span className="al-kpi-titulo">Adeudados</span>
+            <small>{resumen.adeudados > 0 ? 'Vencidos sin pagar, de todos los meses' : 'No hay alquileres adeudados'}</small>
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="page-filters">
         <input
@@ -137,7 +149,7 @@ export function AlquileresPage() {
         <select className="filter-select" aria-label="Estado" value={filtros.estado || ''} onChange={(e) => cambiarFiltro('estado', e.target.value)}>
           <option value="">Todos los estados</option>
           <option value="pendiente">Pendientes</option>
-          <option value="vencido">Vencidos</option>
+          <option value="adeudado">Adeudados</option>
           <option value="pagado">Pagados</option>
         </select>
 
@@ -188,17 +200,12 @@ export function AlquileresPage() {
                 const inquilino = contrato?.inquilinos;
                 const propiedad = contrato?.propiedades;
                 const aviso = etiquetaVencimiento(periodo);
-                const vencido = aviso?.tono === 'vencido';
                 return (
                   <tr key={periodo.id} className="al-fila" onClick={() => setPeriodoSeleccionado(periodo)}>
                     <td>
-                      {vencido ? (
-                        <span className="estado-tag al-vencido">Vencido</span>
-                      ) : (
-                        <span className={`estado-tag estado-${periodo.estado}`}>
-                          {ESTADO_PERIODO_ALQUILER_LABELS[periodo.estado]}
-                        </span>
-                      )}
+                      <span className={`estado-tag estado-${periodo.estado}`}>
+                        {ESTADO_PERIODO_ALQUILER_LABELS[periodo.estado]}
+                      </span>
                     </td>
                     <td>
                       <div className="al-principal">{etiquetaPeriodo(periodo)}</div>

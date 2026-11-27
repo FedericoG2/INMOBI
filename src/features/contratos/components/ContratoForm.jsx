@@ -7,7 +7,7 @@ import { InputMonto } from '../../../shared/components/InputMonto';
 import { SubirArchivos } from '../../../shared/components/SubirArchivos';
 import { Icon } from '../../../shared/components/Icons';
 import { inquilinosService } from '../../../services/inquilinosService';
-import { propiedadesService } from '../../../services/propiedadesService';
+import { propiedadesService, nombrePropietario } from '../../../services/propiedadesService';
 import { nombreInquilino, direccionPropiedad, calendarioAumentos } from '../../../services/contratosService';
 import '../../../shared/styles/forms.css';
 import './ContratoForm.css';
@@ -339,6 +339,8 @@ export function ContratoForm({ contrato, onSubmit, onCancel, modo = 'crear' }) {
   const opcionInquilino = opcionesInquilinos.find((opcion) => opcion.value === formData.inquilino_id);
   const opcionPropiedad = opcionesPropiedades.find((opcion) => opcion.value === formData.propiedad_id);
 
+  const dueno = propiedadesDisponibles.find((prop) => prop.id === formData.propiedad_id)?.propietarios;
+
   const fechasAumento = calendarioAumentos({
     fechaInicio: formData.fecha_inicio,
     fechaFin: formData.fecha_fin,
@@ -621,6 +623,20 @@ export function ContratoForm({ contrato, onSubmit, onCancel, modo = 'crear' }) {
                   {opcionPropiedad.meta && <span className="selectb-meta">{opcionPropiedad.meta}</span>}
                 </span>
               ),
+              true,
+            ],
+            [
+              'Propietario',
+              dueno ? (
+                <span key="propietario" className="resumen-opcion">
+                  <span className="selectb-texto"><strong>{nombrePropietario(dueno)}</strong></span>
+                  {dueno.documento && (
+                    <span className="selectb-meta">
+                      {dueno.tipo_persona === 'juridica' ? 'CUIT' : 'DNI'} {dueno.documento}
+                    </span>
+                  )}
+                </span>
+              ) : 'Sin asignar',
               true,
             ],
           ]}

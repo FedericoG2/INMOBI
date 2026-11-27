@@ -43,11 +43,11 @@ export function PeriodoDetalle({ periodoId, onCerrar, onActualizado }) {
   const toast = useToast();
 
   useEffect(() => {
-    if (!periodo?.contrato_id || periodo.estado !== ESTADO_PERIODO_ALQUILER.PENDIENTE) return undefined;
+    if (!periodo?.contrato_id || periodo.estado === ESTADO_PERIODO_ALQUILER.PAGADO) return undefined;
     let vigente = true;
     contratosService.listarPeriodos(periodo.contrato_id).then((lista) => {
       if (!vigente) return;
-      setAnterioresPendientes(lista.filter((item) => item.estado === 'pendiente' && (
+      setAnterioresPendientes(lista.filter((item) => item.estado !== 'pagado' && (
         item.periodo_anio < periodo.periodo_anio
         || (item.periodo_anio === periodo.periodo_anio && item.periodo_mes < periodo.periodo_mes)
       )));
@@ -61,14 +61,14 @@ export function PeriodoDetalle({ periodoId, onCerrar, onActualizado }) {
   if (error) return <div className="periodo-estado periodo-error">Error: {error}</div>;
   if (!periodo) return <div className="periodo-estado periodo-error">Período no encontrado</div>;
 
-  const pendiente = periodo.estado === ESTADO_PERIODO_ALQUILER.PENDIENTE;
+  // Pendiente o adeudado: todavía se puede cobrar.
+  const pendiente = periodo.estado !== ESTADO_PERIODO_ALQUILER.PAGADO;
   const pagado = periodo.estado === ESTADO_PERIODO_ALQUILER.PAGADO;
   const faltaAumento = faltaAplicarAumento(periodo);
   const contrato = periodo.contratos;
   const inquilino = contrato?.inquilinos;
   const propiedad = contrato?.propiedades;
   const aviso = etiquetaVencimiento(periodo);
-  const vencido = aviso?.tono === 'vencido';
   const resumen = `${nombreInquilino(inquilino)} · ${direccionPropiedad(propiedad)}`;
 
   let textoAumento = null;
@@ -180,7 +180,7 @@ export function PeriodoDetalle({ periodoId, onCerrar, onActualizado }) {
     try {
       await alquileresService.deshacerPago(periodoId);
       await recargar();
-      toast.success(`Pago deshecho: ${etiquetaPeriodo(periodo)} volvió a pendiente`);
+      toast.success(`Pago deshecho: ${etiquetaPeriodo(periodo)} ya no figura como pagado`);
       if (onActualizado) onActualizado();
     } catch (err) {
       setAccionError(err.message);
@@ -192,13 +192,9 @@ export function PeriodoDetalle({ periodoId, onCerrar, onActualizado }) {
   return (
     <div className="cd">
       <div className="cd-barra">
-        {vencido ? (
-          <span className="estado-tag al-vencido">Vencido</span>
-        ) : (
-          <span className={`estado-tag estado-${periodo.estado}`}>
-            {ESTADO_PERIODO_ALQUILER_LABELS[periodo.estado]}
-          </span>
-        )}
+        <span className={`estado-tag estado-${periodo.estado}`}>
+          {ESTADO_PERIODO_ALQUILER_LABELS[periodo.estado]}
+        </span>
         <span className="cd-vigencia">
           <Icon name="calendar" size={16} />
           {etiquetaPeriodo(periodo)}
@@ -394,7 +390,7 @@ export function PeriodoDetalle({ periodoId, onCerrar, onActualizado }) {
         isOpen={deshacerAbierto}
         title="Deshacer Pago"
         message={`Vas a deshacer el pago de ${etiquetaPeriodo(periodo)}: ${resumen}.`}
-        warning="El período vuelve a estado Pendiente. Los comprobantes se conservan."
+        warning="El período vuelve a Pendiente o, si ya venció, a Adeudado. Los comprobantes se conservan."
         confirmLabel="Deshacer Pago"
         cancelLabel="Volver"
         variant="danger"

@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { activarContratosProgramados } from './activacionContratos';
+import { sincronizarContratos } from './activacionContratos';
 import { exigirPropiedadUnica } from './duplicados';
 
 const SELECT_PROPIEDAD = `
@@ -37,7 +37,7 @@ const SELECT_PROPIEDAD = `
 
 export const propiedadesService = {
   async listar({ busqueda = '', tipo = null, estado = null, propietarioId = null } = {}) {
-    await activarContratosProgramados();
+    await sincronizarContratos();
     let query = supabase
       .from('propiedades')
       .select(SELECT_PROPIEDAD)

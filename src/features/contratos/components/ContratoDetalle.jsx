@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useContratoDetalle } from '../hooks/useContratos';
 import { contratosService, nombreInquilino, direccionPropiedad, calcularProximoAumento, calendarioAumentos } from '../../../services/contratosService';
+import { nombrePropietario } from '../../../services/propiedadesService';
 import { Button } from '../../../shared/components/Button';
 import { ConfirmDialog } from '../../../shared/components/ConfirmDialog';
 import { Modal } from '../../../shared/components/Modal';
@@ -26,12 +27,6 @@ function listaConY(elementos) {
   return `${elementos.slice(0, -1).join(', ')} y ${elementos[elementos.length - 1]}`;
 }
 
-function fechaHoyISO() {
-  const hoy = new Date();
-  const mes = String(hoy.getMonth() + 1).padStart(2, '0');
-  const dia = String(hoy.getDate()).padStart(2, '0');
-  return `${hoy.getFullYear()}-${mes}-${dia}`;
-}
 import { Icon } from '../../../shared/components/Icons';
 import { Dato, Tarjeta } from '../../../shared/components/Detalle';
 import '../../../shared/styles/forms.css';
@@ -153,9 +148,7 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
           observaciones: `${previa}Cierre: ${observaciones.trim()}`,
         });
       }
-      if (accion === 'finalizar') {
-        await contratosService.finalizar(contratoId, motivo);
-      } else if (accion === 'cancelar') {
+      if (accion === 'cancelar') {
         await contratosService.cancelar(contratoId, motivo);
       } else if (accion === 'rescindir') {
         await contratosService.rescindir(contratoId, motivo);
@@ -164,7 +157,6 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
       await recargar();
       if (onActualizado) onActualizado();
       const mensajes = {
-        finalizar: 'Contrato finalizado correctamente',
         rescindir: 'Contrato rescindido correctamente',
         cancelar: 'Contrato cancelado correctamente',
       };
@@ -210,10 +202,9 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
   const documentosOrdenados = [...documentos].sort(
     (a, b) => Number(b.es_contrato_firmado) - Number(a.es_contrato_firmado),
   );
-  const hoy = fechaHoyISO();
   const indiceProximo = periodos.findIndex((periodo) => periodo.estado !== 'pagado');
   const pagados = periodos.filter((periodo) => periodo.estado === 'pagado').length;
-  const vencidos = periodos.filter((periodo) => periodo.estado === 'pendiente' && periodo.fecha_vencimiento < hoy).length;
+  const adeudados = periodos.filter((periodo) => periodo.estado === 'adeudado').length;
   const inquilino = contrato.inquilinos;
   const propiedad = contrato.propiedades;
 
@@ -251,6 +242,18 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
               {propiedad?.codigo && <span className="selectb-meta">{propiedad.codigo}</span>}
             </span>
           </Dato>
+          <Dato etiqueta="Propietario">
+            {propiedad?.propietarios ? (
+              <span className="resumen-opcion">
+                <span className="selectb-texto"><strong>{nombrePropietario(propiedad.propietarios)}</strong></span>
+                {propiedad.propietarios.documento && (
+                  <span className="selectb-meta">
+                    {propiedad.propietarios.tipo_persona === 'juridica' ? 'CUIT' : 'DNI'} {propiedad.propietarios.documento}
+                  </span>
+                )}
+              </span>
+            ) : 'Sin asignar'}
+          </Dato>
         </dl>
       </Tarjeta>
 
@@ -267,13 +270,13 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
       </Tarjeta>
 
       <Tarjeta
-        titulo="Historial de pagos"
+        titulo="Historial de Pagos de Períodos de Alquiler"
         icono={<Icon name="receipt" size={18} />}
         contador={periodos.length > 0 ? periodos.length : null}
         accion={periodos.length > 0 && (
           <span className="cd-resumen-pagos">
             {pagados} de {periodos.length} pagados
-            {vencidos > 0 && <em> · {vencidos} vencido{vencidos === 1 ? '' : 's'}</em>}
+            {adeudados > 0 && <em> · {adeudados} adeudado{adeudados === 1 ? '' : 's'}</em>}
           </span>
         )}
       >
@@ -292,7 +295,6 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
               </thead>
               <tbody>
                 {periodos.map((periodo, indice) => {
-                  const vencido = periodo.estado === 'pendiente' && periodo.fecha_vencimiento < hoy;
                   const esProximo = indice === indiceProximo;
                   return (
                     <tr
@@ -304,8 +306,8 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
                       <td>{formatearFecha(periodo.fecha_vencimiento)}</td>
                       <td className="cd-num">{formatearMonto(periodo.monto)}</td>
                       <td>
-                        <span className={`cd-estado cd-estado-${vencido ? 'vencido' : periodo.estado}`}>
-                          {vencido ? 'Vencido' : ESTADO_PERIODO_ALQUILER_LABELS[periodo.estado] || periodo.estado}
+                        <span className={`cd-estado cd-estado-${periodo.estado}`}>
+                          {ESTADO_PERIODO_ALQUILER_LABELS[periodo.estado] || periodo.estado}
                         </span>
                       </td>
                     </tr>
@@ -478,8 +480,8 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
           Cerrar
         </Button>
         {contrato.estado === 'activo' && (
-          <Button onClick={() => abrirModalAccion('cierre')}>
-            Finalizar o Rescindir
+          <Button variant="danger" onClick={() => abrirModalAccion('cierre')}>
+            Rescindir contrato
           </Button>
         )}
         {contrato.estado === 'programado' && (
@@ -499,7 +501,6 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
           inquilino={nombreInquilino(inquilino)}
           propiedad={direccionPropiedad(propiedad)}
           fechaFin={formatearFecha(contrato.fecha_fin)}
-          antesDeTiempo={contrato.fecha_fin > hoy}
           onConfirmar={handleAccion}
           onCancelar={() => setModalAccion(null)}
         />

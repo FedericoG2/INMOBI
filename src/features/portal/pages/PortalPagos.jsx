@@ -19,7 +19,7 @@ function Tabla({ datos, esInquilino, recargar }) {
   const contratoDe = (periodo) => datos.contratos.find((contrato) => contrato.id === periodo.contrato_id);
   // Se busca en la lista para que el detalle refleje un comprobante recién cargado.
   const elegido = datos.periodos.find((periodo) => periodo.id === periodoId) || null;
-  const puedeCargar = (periodo) => esInquilino && periodo.estado === 'pendiente' && contratoDe(periodo).estado === 'activo';
+  const puedeCargar = (periodo) => esInquilino && periodo.estado !== 'pagado' && contratoDe(periodo).estado === 'activo';
 
   return (
     <>
@@ -27,7 +27,7 @@ function Tabla({ datos, esInquilino, recargar }) {
         <select className="filter-select" aria-label="Estado" value={estado} onChange={(event) => setEstado(event.target.value)}>
           <option value="">Todos los estados</option>
           <option value="pendiente">Pendientes</option>
-          <option value="vencido">Vencidos</option>
+          <option value="adeudado">Adeudados</option>
           <option value="pagado">Pagados</option>
         </select>
       </div>

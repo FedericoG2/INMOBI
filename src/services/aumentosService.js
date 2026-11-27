@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { sincronizarContratos } from './activacionContratos';
 import { indicesService } from './indicesService';
 import { TIPO_AJUSTE } from '../constants/estados';
 import {
@@ -18,6 +19,8 @@ export const aumentosService = {
    */
   // onBase recibe la lista apenas llega de la base, antes de calcular los montos.
   async listar({ anio, mes, estado, onBase } = {}) {
+    // Primero los contratos: uno vencido no tiene que generar aumentos.
+    await sincronizarContratos();
     const { error: syncError } = await supabase.rpc('sincronizar_aumentos_pendientes');
     if (syncError) throw new Error(syncError.message);
 
@@ -321,18 +324,6 @@ export const aumentosService = {
         factor,
       },
     };
-  },
-
-  /**
-   * Marcar un aumento como revisado
-   */
-  async marcarRevisado(aumentoId) {
-    const { error } = await supabase
-      .from('aumentos')
-      .update({ estado: 'revisado' })
-      .eq('id', aumentoId);
-
-    if (error) throw new Error(error.message);
   },
 
   /**

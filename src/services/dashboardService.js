@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { activarContratosProgramados } from './activacionContratos';
+import { sincronizarContratos } from './activacionContratos';
 import { ESTADO_AUMENTO, ESTADO_CONTRATO, ESTADO_RECLAMO } from '../constants/estados';
 import { indicesService } from './indicesService';
 
@@ -71,7 +71,7 @@ async function contar(tabla, aplicar) {
 
 export const dashboardService = {
   async obtenerIndicadores() {
-    await activarContratosProgramados();
+    await sincronizarContratos();
     const desde = fechaISO(hoy());
     const hasta = fechaISO(new Date(hoy().getTime() + 60 * 24 * 60 * 60 * 1000));
 
@@ -82,8 +82,8 @@ export const dashboardService = {
         .eq('estado', ESTADO_CONTRATO.ACTIVO)
         .gte('fecha_fin', desde)
         .lte('fecha_fin', hasta)),
-      contar('aumentos', (query) => query.in('estado', [ESTADO_AUMENTO.PENDIENTE, ESTADO_AUMENTO.REVISADO])),
-      contar('periodos_alquiler', (query) => query.eq('estado', 'pendiente').lt('fecha_vencimiento', desde)),
+      contar('aumentos', (query) => query.eq('estado', ESTADO_AUMENTO.PENDIENTE)),
+      contar('periodos_alquiler', (query) => query.eq('estado', 'adeudado')),
       contar('reclamos', (query) => query.eq('estado', ESTADO_RECLAMO.PENDIENTE)),
     ]);
 
@@ -98,7 +98,7 @@ export const dashboardService = {
   },
 
   async listarContratosPorVencer() {
-    await activarContratosProgramados();
+    await sincronizarContratos();
     const desde = fechaISO(hoy());
     const hasta = fechaISO(new Date(hoy().getTime() + 60 * 24 * 60 * 60 * 1000));
     const { data, error } = await supabase

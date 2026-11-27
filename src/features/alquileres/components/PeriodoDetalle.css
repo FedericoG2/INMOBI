@@ -26,3 +26,5 @@
 .form-group input, .form-group textarea { padding: 0.5rem 0.7rem; border: 1px solid #d1d5db; border-radius: 6px; font: inherit; }
 .form-actions, .detalle-acciones { display: flex; justify-content: flex-end; gap: 0.75rem; }
 .detalle-acciones { padding-top: 0.5rem; }
+
+.estado-adeudado { background: #f7e5e5; color: #963232; }

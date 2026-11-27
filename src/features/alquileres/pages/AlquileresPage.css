@@ -165,3 +165,7 @@
   color: var(--muted);
   font-size: 0.8rem;
 }
+
+/* Mismos colores que las etiquetas de estado */
+.al-kpi-pendiente .al-kpi-icono { background: var(--warn-bg); color: var(--warn); }
+.al-kpi-pagado .al-kpi-icono { background: var(--ok-bg); color: var(--ok); }

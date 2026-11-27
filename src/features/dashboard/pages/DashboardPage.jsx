@@ -48,7 +48,7 @@ export function DashboardPage() {
     { titulo: 'Propiedades', ayuda: 'En administración', valor: indicadores.propiedades, icono: 'building', destino: '/app/propiedades' },
     { titulo: 'Contratos activos', ayuda: 'Vigentes hoy', valor: indicadores.contratosActivos, icono: 'file', destino: '/app/contratos' },
     { titulo: 'Por vencer', ayuda: 'En los próximos 60 días', valor: indicadores.contratosPorVencer, icono: 'calendar', destino: '/app/contratos', tono: 'alerta' },
-    { titulo: 'Aumentos por confirmar', ayuda: 'Pendientes y revisados', valor: indicadores.aumentosPendientes, icono: 'trend', destino: '/app/aumentos', tono: 'alerta' },
+    { titulo: 'Aumentos por confirmar', ayuda: 'Pendientes de confirmar', valor: indicadores.aumentosPendientes, icono: 'trend', destino: '/app/aumentos', tono: 'alerta' },
     { titulo: 'Reclamos pendientes', ayuda: 'Sin gestionar', valor: indicadores.reclamosPendientes, icono: 'alert', destino: '/app/reclamos', tono: 'alerta' },
   ] : [];
 

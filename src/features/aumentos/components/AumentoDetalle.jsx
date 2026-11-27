@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAumentoDetalle } from '../hooks/useAumentos';
 import { aumentosService, etiquetaPeriodoAumento, formatearMonto, nombreInquilino, direccionPropiedad, nombrePropietario, etiquetaMes } from '../../../services/aumentosService';
-import { ESTADO_AUMENTO, ESTADO_AUMENTO_LABELS, TIPO_AJUSTE, TIPO_AJUSTE_LABELS, TIPO_PROPIEDAD_LABELS, ESTADO_CONTRATO_LABELS, PERIODICIDAD_AJUSTE_LABELS } from '../../../constants/estados';
+import { ESTADO_AUMENTO, ESTADO_AUMENTO_LABELS, TIPO_AJUSTE_LABELS, TIPO_PROPIEDAD_LABELS, ESTADO_CONTRATO_LABELS, PERIODICIDAD_AJUSTE_LABELS } from '../../../constants/estados';
 import { contratosService } from '../../../services/contratosService';
 import { Modal } from '../../../shared/components/Modal';
 import { Button } from '../../../shared/components/Button';
@@ -14,6 +14,7 @@ import { useApiIndices } from '../hooks/useApiIndices';
 import { soloDecimal } from '../../../shared/validaciones';
 import '../../../shared/styles/forms.css';
 import '../../../shared/components/SelectBuscable.css';
+import { CalculoDetallado } from './CalculoDetallado';
 import './AumentoDetalle.css';
 
 function formatearFecha(fecha) {
@@ -86,7 +87,7 @@ export function AumentoDetalle({ aumentoId, onCerrar, onActualizado }) {
           detalle: aumento.calculo_detalle || {},
         });
       } else {
-        // Pendiente o revisado, calcular
+        // Pendiente: calcular
         calcularMonto();
       }
     }
@@ -104,21 +105,6 @@ export function AumentoDetalle({ aumentoId, onCerrar, onActualizado }) {
       setErrorCalculo(err.message);
     } finally {
       setCalculando(false);
-    }
-  }
-
-  async function handleMarcarRevisado() {
-    setProcesando(true);
-    setAccionError(null);
-    try {
-      await aumentosService.marcarRevisado(aumentoId);
-      onActualizado?.({ estado: ESTADO_AUMENTO.REVISADO });
-      await recargar();
-      toast.success('Aumento marcado como revisado');
-    } catch (err) {
-      setAccionError(err.message);
-    } finally {
-      setProcesando(false);
     }
   }
 
@@ -312,7 +298,7 @@ export function AumentoDetalle({ aumentoId, onCerrar, onActualizado }) {
         <Tarjeta titulo="Resultado" icono={<Icon name="trend" size={18} />}>
           <dl className="cd-datos">
             <Dato etiqueta="Monto anterior">{formatearMonto(aumento.monto_anterior)}</Dato>
-            <Dato etiqueta="Variación">{variacion != null ? `+${porcentaje(variacion)}` : '—'}</Dato>
+            <Dato etiqueta="Porcentaje de Aumento Aplicado">{variacion != null ? `+${porcentaje(variacion)}` : '—'}</Dato>
             <Dato etiqueta="Monto nuevo" destacado>
               {montoNuevoVista ? formatearMonto(montoNuevoVista) : calculando ? 'Calculando…' : '—'}
             </Dato>
@@ -362,56 +348,7 @@ export function AumentoDetalle({ aumentoId, onCerrar, onActualizado }) {
                 </p>
               )}
 
-              {detalle.tipo === TIPO_AJUSTE.IPC && (
-                <div className="cd-tabla-contenedor">
-                  <table className="cd-tabla">
-                    <thead>
-                      <tr><th>Mes</th><th>Origen</th><th className="cd-num">Variación IPC</th></tr>
-                    </thead>
-                    <tbody>
-                      {detalle.meses?.map((m, i) => {
-                        const valor = detalle.valores?.[i];
-                        return (
-                          <tr key={`${m.anio}-${m.mes}`}>
-                            <td>{etiquetaMes(m.mes)} {m.anio}</td>
-                            <td>{valor == null ? 'Sin dato' : detalle.origenes?.[i] === 'manual' ? 'Carga manual' : 'Oficial'}</td>
-                            <td className="cd-num">{valor != null ? porcentaje(valor) : '—'}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {detalle.tipo === TIPO_AJUSTE.ICL && (
-                <div className="cd-tabla-contenedor">
-                  <table className="cd-tabla">
-                    <thead>
-                      <tr><th>Fecha</th><th>Origen</th><th className="cd-num">Valor ICL</th></tr>
-                    </thead>
-                    <tbody>
-                      {[
-                        { clave: 'inicio', fecha: detalle.fechaInicio, valor: detalle.valorInicio, origen: detalle.origenInicio },
-                        { clave: 'fin', fecha: detalle.fechaFin, valor: detalle.valorFin, origen: detalle.origenFin },
-                      ].map((fila) => (
-                        <tr key={fila.clave}>
-                          <td>{formatearFecha(fila.fecha)}</td>
-                          <td>{fila.valor == null ? 'Sin dato' : fila.origen === 'manual' ? 'Carga manual' : 'Oficial'}</td>
-                          <td className="cd-num">{fila.valor != null ? fila.valor : '—'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {detalle.factor && (
-                <p className="ad-factor">
-                  Factor de actualización: <strong>{detalle.factor.toFixed(4)}</strong>
-                  {montoOriginal ? ` · Monto calculado: ${formatearMonto(montoOriginal)}` : ''}
-                </p>
-              )}
+              <CalculoDetallado detalle={detalle} montoAnterior={anterior} montoCalculado={montoOriginal} />
 
               {hayRedondeo && (
                 <div className="ad-redondeado" role="status">
@@ -530,11 +467,6 @@ export function AumentoDetalle({ aumentoId, onCerrar, onActualizado }) {
               {(cambioRedondeo || observaciones !== (aumento.observaciones || '')) && (
                 <Button variant="secondary" onClick={handleGuardarCambios} disabled={procesando || !calculo?.montoCalculado}>
                   Guardar cambios
-                </Button>
-              )}
-              {aumento.estado === ESTADO_AUMENTO.PENDIENTE && calculo?.montoCalculado && (
-                <Button variant="outline" onClick={handleMarcarRevisado} disabled={procesando}>
-                  Marcar como revisado
                 </Button>
               )}
               <Button variant="success" onClick={() => setConfirmarAbierto(true)} disabled={!puedeConfirmar || procesando}>

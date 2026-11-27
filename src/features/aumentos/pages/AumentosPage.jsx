@@ -15,6 +15,11 @@ import { ConfirmDialog } from '../../../shared/components/ConfirmDialog';
 import { useToast } from '../../../shared/components/Toast';
 import './AumentosPage.css';
 
+const INDICADORES = [
+  { estado: ESTADO_AUMENTO.PENDIENTE, titulo: 'Pendientes', icono: 'trend', clase: 'es-alerta' },
+  { estado: ESTADO_AUMENTO.CONFIRMADO, titulo: 'Confirmados', icono: 'check', clase: 'es-ok' },
+];
+
 export function AumentosPage() {
   // Sin elección manual se sigue el período vigente: cambia solo el día 11.
   const periodoVigente = aumentosService.obtenerPeriodoTrabajo();
@@ -24,6 +29,8 @@ export function AumentosPage() {
   const [filtroEstado, setFiltroEstado] = useState(null);
   const [aumentoSeleccionado, setAumentoSeleccionado] = useState(null);
   const [lote, setLote] = useState(null);
+  // Aumentos marcados con la casilla para confirmar juntos.
+  const [seleccion, setSeleccion] = useState(() => new Set());
   const [confirmando, setConfirmando] = useState(false);
   const [mostrarIndices, setMostrarIndices] = useState(false);
   
@@ -52,6 +59,7 @@ export function AumentosPage() {
   function handleCambiarPeriodo({ anio, mes }) {
     const esElVigente = anio === periodoVigente.anio && mes === periodoVigente.mes;
     setPeriodoElegido(esElVigente ? null : { anio, mes });
+    setSeleccion(new Set());
   }
 
 
@@ -71,18 +79,37 @@ export function AumentosPage() {
 
   const sinConfirmar = aumentosConEstado.filter((a) => a.estado !== ESTADO_AUMENTO.CONFIRMADO);
   const listosTodos = sinConfirmar.filter((a) => a.monto_propuesto);
-  const listosRevisados = listosTodos.filter((a) => a.estado === ESTADO_AUMENTO.REVISADO);
+  const listosSeleccionados = listosTodos.filter((a) => seleccion.has(a.id));
   const sinCalculo = sinConfirmar.length - listosTodos.length;
   // Mientras se calculan no se puede confirmar en lote.
   const calculandoMontos = sinConfirmar.some((a) => a.calculando);
-  const revisados = sinConfirmar.filter((a) => a.estado === ESTADO_AUMENTO.REVISADO).length;
-  const elegidosLote = lote === 'todos' ? listosTodos : listosRevisados;
-  const sinRevisar = elegidosLote.filter((a) => a.estado !== ESTADO_AUMENTO.REVISADO).length;
+  const elegidosLote = lote === 'todos' ? listosTodos : listosSeleccionados;
   const aumentosVisibles = filtroEstado
     ? aumentosConEstado.filter((a) => a.estado === filtroEstado)
     : aumentosConEstado;
   // Solo se pagina la tabla: confirmar en lote sigue abarcando todos.
   const paginacion = usePaginacion(aumentosVisibles, `${periodo.anio}-${periodo.mes}|${filtroEstado || ''}`);
+  // Solo se pueden marcar los que tienen el monto calculado y falta confirmar.
+  const seleccionable = (a) => a.estado !== ESTADO_AUMENTO.CONFIRMADO && Boolean(a.monto_propuesto) && !a.calculando;
+  const marcables = aumentosVisibles.filter(seleccionable);
+  const todosMarcados = marcables.length > 0 && marcables.every((a) => seleccion.has(a.id));
+
+  function alternar(id) {
+    setSeleccion((actual) => {
+      const nueva = new Set(actual);
+      if (nueva.has(id)) nueva.delete(id);
+      else nueva.add(id);
+      return nueva;
+    });
+  }
+
+  function alternarTodos() {
+    setSeleccion((actual) => {
+      const nueva = new Set(actual);
+      marcables.forEach((a) => (todosMarcados ? nueva.delete(a.id) : nueva.add(a.id)));
+      return nueva;
+    });
+  }
 
   async function handleConfirmarLote() {
     const elegidos = elegidosLote;
@@ -102,6 +129,7 @@ export function AumentosPage() {
       }
     }
     recargar();
+    setSeleccion(new Set());
     setConfirmando(false);
     if (fallidos.length === 0) {
       toast.success(elegidos.length === 1 ? 'Aumento confirmado' : `${elegidos.length} aumentos confirmados`);
@@ -155,18 +183,23 @@ export function AumentosPage() {
       )}
 
       <div className="au-kpis">
-        <div className={`au-kpi${sinConfirmar.length > 0 ? ' es-alerta' : ' es-ok'}`}>
-          <span className="au-kpi-icono"><Icon name="trend" size={18} /></span>
-          <strong>{sinConfirmar.length}</strong>
-          <span className="au-kpi-titulo">Aumentos pendientes</span>
-          <small>{periodoTexto}</small>
-        </div>
-        <div className="au-kpi es-revisado">
-          <span className="au-kpi-icono"><Icon name="check" size={18} /></span>
-          <strong>{revisados}</strong>
-          <span className="au-kpi-titulo">Revisados</span>
-          <small>{periodoTexto}</small>
-        </div>
+        {INDICADORES.map((indicador) => {
+          const activo = filtroEstado === indicador.estado;
+          return (
+            <button
+              type="button"
+              key={indicador.estado}
+              className={`au-kpi ${indicador.clase}${activo ? ' is-activo' : ''}`}
+              onClick={() => setFiltroEstado(activo ? null : indicador.estado)}
+              aria-pressed={activo}
+            >
+              <span className="au-kpi-icono"><Icon name={indicador.icono} size={18} /></span>
+              <strong>{aumentosConEstado.filter((a) => a.estado === indicador.estado).length}</strong>
+              <span className="au-kpi-titulo">{indicador.titulo}</span>
+              <small>{periodoTexto}</small>
+            </button>
+          );
+        })}
       </div>
 
       <div className="au-barra">
@@ -178,16 +211,15 @@ export function AumentosPage() {
         >
           <option value="">Todos los estados</option>
           <option value={ESTADO_AUMENTO.PENDIENTE}>Pendientes</option>
-          <option value={ESTADO_AUMENTO.REVISADO}>Revisados</option>
           <option value={ESTADO_AUMENTO.CONFIRMADO}>Confirmados</option>
         </select>
         <div className="au-barra-accion">
           <Button
             variant="outline"
-            disabled={listosRevisados.length === 0 || confirmando || calculandoMontos}
-            onClick={() => setLote('revisados')}
+            disabled={listosSeleccionados.length === 0 || confirmando || calculandoMontos}
+            onClick={() => setLote('seleccionados')}
           >
-            Confirmar revisados ({listosRevisados.length})
+            Confirmar seleccionados ({listosSeleccionados.length})
           </Button>
           <Button
             variant="success"
@@ -215,13 +247,22 @@ export function AumentosPage() {
           <table className="data-table au-tabla">
             <thead>
               <tr>
+                <th className="au-check">
+                  <input
+                    type="checkbox"
+                    aria-label="Seleccionar todos"
+                    checked={todosMarcados}
+                    disabled={marcables.length === 0 || confirmando}
+                    onChange={alternarTodos}
+                  />
+                </th>
                 <th>Estado</th>
                 <th>Período</th>
                 <th>Inquilino</th>
                 <th>Inmueble</th>
                 <th>Índice</th>
                 <th className="au-num">Monto actual</th>
-                <th className="au-centro">Variación</th>
+                <th className="au-centro au-porcentaje">Porcentaje de Aumento Aplicado</th>
                 <th className="au-num">Monto calculado</th>
                 <th></th>
               </tr>
@@ -237,7 +278,18 @@ export function AumentosPage() {
                 const claseEstado = aumento.esRezagado ? 'rezagado' : aumento.estado;
 
                 return (
-                  <tr key={aumento.id} className="au-fila" onClick={() => handleVerDetalle(aumento)}>
+                  <tr key={aumento.id} className={`au-fila${seleccion.has(aumento.id) ? ' is-seleccionada' : ''}`} onClick={() => handleVerDetalle(aumento)}>
+                    <td className="au-check" onClick={(event) => event.stopPropagation()}>
+                      {seleccionable(aumento) && (
+                        <input
+                          type="checkbox"
+                          aria-label={`Seleccionar ${nombreInquilino(inquilino)}`}
+                          checked={seleccion.has(aumento.id)}
+                          disabled={confirmando}
+                          onChange={() => alternar(aumento.id)}
+                        />
+                      )}
+                    </td>
                     <td>
                       <span className={`au-estado au-estado-${claseEstado}`}>
                         {aumento.esRezagado ? 'Rezagado' : ESTADO_AUMENTO_LABELS[aumento.estado]}
@@ -278,7 +330,7 @@ export function AumentosPage() {
                         }}
                       >
                         <Icon name="eye" size={15} />
-                        {aumento.estado === ESTADO_AUMENTO.PENDIENTE ? 'Revisar' : 'Ver'}
+                        Ver detalle
                       </Button>
                     </td>
                   </tr>
@@ -320,19 +372,16 @@ export function AumentosPage() {
 
       <ConfirmDialog
         isOpen={!!lote}
-        title={lote === 'todos' ? 'Confirmar Todos los Aumentos' : 'Confirmar Aumentos Revisados'}
+        title={lote === 'todos' ? 'Confirmar Todos los Aumentos' : 'Confirmar Aumentos Seleccionados'}
         message={lote === 'todos'
           ? `Vas a confirmar ${elegidosLote.length} ${elegidosLote.length === 1 ? 'aumento pendiente' : 'aumentos pendientes'}.`
-          : `Vas a confirmar ${elegidosLote.length} ${elegidosLote.length === 1 ? 'aumento revisado' : 'aumentos revisados'}.`}
+          : `Vas a confirmar ${elegidosLote.length} ${elegidosLote.length === 1 ? 'aumento seleccionado' : 'aumentos seleccionados'}.`}
         warning={[
-          lote === 'todos' && sinRevisar > 0
-            ? `Atención: ${sinRevisar === 1 ? '1 aumento todavía no fue revisado' : `${sinRevisar} aumentos todavía no fueron revisados`}.`
-            : null,
           lote === 'todos' && sinCalculo > 0
             ? `${sinCalculo === 1 ? '1 aumento queda' : `${sinCalculo} aumentos quedan`} afuera porque faltan índices.`
             : null,
         ].filter(Boolean).join(' ') || undefined}
-        confirmLabel={lote === 'todos' ? 'Confirmar Todos' : 'Confirmar Revisados'}
+        confirmLabel={lote === 'todos' ? 'Confirmar Todos' : 'Confirmar Seleccionados'}
         cancelLabel="Volver"
         variant="success"
         busy={confirmando}

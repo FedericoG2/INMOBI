@@ -38,7 +38,7 @@ export function PortalInicio({ rol }) {
     >
       {({ propiedades, contratos, periodos, reclamos }) => {
         const activos = contratos.filter((contrato) => contrato.estado === 'activo');
-        const pendientes = periodos.filter((periodo) => periodo.estado === 'pendiente')
+        const pendientes = periodos.filter((periodo) => periodo.estado !== 'pagado')
           .sort((a, b) => a.fecha_vencimiento.localeCompare(b.fecha_vencimiento));
         const abiertos = reclamos.filter((reclamo) => reclamo.estado !== ESTADO_RECLAMO.RESUELTO);
         const direccion = (contratoId) => direccionPropiedad(contratos.find((contrato) => contrato.id === contratoId).propiedades);

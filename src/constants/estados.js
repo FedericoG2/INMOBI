@@ -47,12 +47,12 @@ export const MOTIVO_CIERRE = {
 
 export const ESTADO_PERIODO_ALQUILER = {
   PENDIENTE: 'pendiente',
+  ADEUDADO: 'adeudado',
   PAGADO: 'pagado',
 };
 
 export const ESTADO_AUMENTO = {
   PENDIENTE: 'pendiente',
-  REVISADO: 'revisado',
   CONFIRMADO: 'confirmado',
 };
 
@@ -104,12 +104,12 @@ export const MOTIVO_CIERRE_LABELS = {
 
 export const ESTADO_PERIODO_ALQUILER_LABELS = {
   [ESTADO_PERIODO_ALQUILER.PENDIENTE]: 'Pendiente',
+  [ESTADO_PERIODO_ALQUILER.ADEUDADO]: 'Adeudado',
   [ESTADO_PERIODO_ALQUILER.PAGADO]: 'Pagado',
 };
 
 export const ESTADO_AUMENTO_LABELS = {
   [ESTADO_AUMENTO.PENDIENTE]: 'Pendiente',
-  [ESTADO_AUMENTO.REVISADO]: 'Revisado',
   [ESTADO_AUMENTO.CONFIRMADO]: 'Confirmado',
 };
 

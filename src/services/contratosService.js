@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { activarContratosProgramados } from './activacionContratos';
+import { sincronizarContratos } from './activacionContratos';
 
 const SELECT_CONTRATO = `
   *,
@@ -20,13 +20,21 @@ const SELECT_CONTRATO = `
     piso,
     departamento,
     localidad,
-    provincia
+    provincia,
+    propietarios (
+      id,
+      tipo_persona,
+      documento,
+      nombre,
+      apellido,
+      razon_social
+    )
   )
 `;
 
 export const contratosService = {
   async listar({ inquilinoId = null, propiedadId = null, estado = null } = {}) {
-    await activarContratosProgramados();
+    await sincronizarContratos();
     let query = supabase
       .from('contratos')
       .select(SELECT_CONTRATO)
@@ -42,7 +50,7 @@ export const contratosService = {
   },
 
   async obtenerPorId(id) {
-    await activarContratosProgramados();
+    await sincronizarContratos();
     const { data, error } = await supabase
       .from('contratos')
       .select(SELECT_CONTRATO)
@@ -74,13 +82,6 @@ export const contratosService = {
 
     if (error) throw new Error(error.message);
     return data;
-  },
-
-  async finalizar(id, motivo) {
-    return this.actualizar(id, {
-      estado: 'finalizado',
-      motivo_cierre: motivo,
-    });
   },
 
   async cancelar(id, motivo) {

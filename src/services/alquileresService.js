@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { activarContratosProgramados } from './activacionContratos';
+import { sincronizarContratos } from './activacionContratos';
 import { calcularProximoAumento, direccionPropiedad, nombreInquilino } from './contratosService';
 import { nombrePropietario } from './propiedadesService';
 import { aumentosService } from './aumentosService';
@@ -54,7 +54,7 @@ const MESES = [
 
 export function faltaAplicarAumento(periodo) {
   const contrato = periodo?.contratos;
-  if (!periodo || periodo.estado !== 'pendiente' || !contrato) return false;
+  if (!periodo || !['pendiente', 'adeudado'].includes(periodo.estado) || !contrato) return false;
   if (contrato.estado !== 'activo') return false;
 
   const fecha = calcularProximoAumento(contrato);
@@ -97,7 +97,7 @@ export const alquileresService = {
     propiedadId = null,
     propietarioId = null,
   } = {}) {
-    await activarContratosProgramados();
+    await sincronizarContratos();
     let query = supabase
       .from('periodos_alquiler')
       .select(SELECT_PERIODO)
@@ -109,9 +109,7 @@ export const alquileresService = {
         query = query.eq('periodo_anio', anio).eq('periodo_mes', numeroMes);
       }
     }
-    if (estado === 'vencido') {
-      query = query.eq('estado', 'pendiente').lt('fecha_vencimiento', fechaHoyISO());
-    } else if (estado) {
+    if (estado) {
       query = query.eq('estado', estado);
     }
     if (contratoId) query = query.eq('contrato_id', contratoId);
@@ -132,16 +130,14 @@ export const alquileresService = {
   // El "mes en curso" es el período de trabajo: el alquiler de un mes se sigue
   // viendo hasta el día 10 inclusive del mes siguiente, aunque ya esté todo cobrado.
   async obtenerResumenCobranza() {
-    await activarContratosProgramados();
-    const hoy = fechaHoyISO();
+    await sincronizarContratos();
     const { anio, mes } = aumentosService.obtenerPeriodoTrabajo();
 
-    const [vencidos, delMes] = await Promise.all([
+    const [adeudados, delMes] = await Promise.all([
       supabase
         .from('periodos_alquiler')
         .select('id', { count: 'exact', head: true })
-        .eq('estado', 'pendiente')
-        .lt('fecha_vencimiento', hoy),
+        .eq('estado', 'adeudado'),
       supabase
         .from('periodos_alquiler')
         .select('fecha_vencimiento', { count: 'exact' })
@@ -151,7 +147,7 @@ export const alquileresService = {
         .order('fecha_vencimiento', { ascending: false })
         .limit(1),
     ]);
-    if (vencidos.error) throw new Error(vencidos.error.message);
+    if (adeudados.error) throw new Error(adeudados.error.message);
     if (delMes.error) throw new Error(delMes.error.message);
 
     return {
@@ -159,7 +155,7 @@ export const alquileresService = {
       // El último vencimiento entre los pendientes del mes.
       vencimiento: delMes.data?.[0]?.fecha_vencimiento || null,
       pendientesMes: delMes.count || 0,
-      vencidos: vencidos.count || 0,
+      adeudados: adeudados.count || 0,
     };
   },
   async obtenerPorId(id) {

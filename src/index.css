@@ -337,3 +337,5 @@ h3 { font-weight: 600; }
   text-transform: uppercase;
   white-space: nowrap;
 }
+
+.estado-adeudado { background: var(--danger-bg); color: var(--danger); }

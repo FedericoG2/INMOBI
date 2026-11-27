@@ -3,6 +3,7 @@
 import { supabase } from '../../lib/supabase';
 import { ROL } from '../../constants/estados';
 import { fechaHoyISO } from '../../services/alquileresService';
+import { sincronizarContratos } from '../../services/activacionContratos';
 
 const ESTADOS_VISIBLES = ['activo', 'finalizado', 'rescindido'];
 
@@ -23,6 +24,7 @@ export const portalService = {
   async obtenerDatos(rol) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return VACIO;
+    await sincronizarContratos();
 
     const esInquilino = rol === ROL.INQUILINO;
     const persona = exigir(await supabase

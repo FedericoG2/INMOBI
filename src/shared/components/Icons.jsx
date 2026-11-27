@@ -68,6 +68,9 @@ export function Icon({ name, size = 18 }) {
   if (name === 'clip') {
     return <svg {...common}><path d="m21 11-8.6 8.6a5 5 0 0 1-7-7l8.6-8.6a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4L15 7" /></svg>;
   }
+  if (name === 'close') {
+    return <svg {...common}><path d="M6 6l12 12M18 6 6 18" /></svg>;
+  }
   if (name === 'check') {
     return <svg {...common}><path d="M5 12l5 5L20 7" /></svg>;
   }

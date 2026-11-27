@@ -109,3 +109,6 @@
 .ct-kpi-activo .ls-kpi-icono { background: var(--ok-bg); color: var(--ok); }
 .ct-kpi-programado .ls-kpi-icono { background: #e3eff7; color: #1c6288; }
 .ct-kpi-finalizado .ls-kpi-icono { background: #f1f5f9; color: #475569; }
+.ct-kpi-rescindido .ls-kpi-icono,
+.ct-kpi-cancelado .ls-kpi-icono { background: var(--danger-bg); color: var(--danger); }
+.ls-kpis.ct-kpis { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
