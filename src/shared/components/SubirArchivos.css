@@ -30,7 +30,7 @@
 .subir-zona:focus-visible,
 .subir-zona.is-drag {
   outline: none;
-  border-color: #2563eb;
+  border-color: #3865c8;
   background: var(--blue-50);
   color: var(--blue-700);
 }
@@ -71,13 +71,13 @@
   background: var(--blue-100);
   color: var(--blue-700);
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.03em;
 }
 
 .subir-ext.es-pdf {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: #f7e5e5;
+  color: #963232;
 }
 
 .subir-info {

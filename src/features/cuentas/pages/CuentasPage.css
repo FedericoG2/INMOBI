@@ -45,11 +45,11 @@
   color: var(--blue-800);
   display: grid;
   place-items: center;
-  font-weight: 700;
+  font-weight: 600;
   flex: none;
 }
 
-.cuenta-persona strong { display: block; font-weight: 650; }
+.cuenta-persona strong { display: block; font-weight: 600; }
 .cuenta-vos { display: block; color: var(--muted); font-size: 0.75rem; }
 
 .cuenta-rol {
@@ -58,15 +58,15 @@
   padding: 0.18rem 0.6rem;
   border-radius: 999px;
   font-size: 0.78rem;
-  font-weight: 650;
+  font-weight: 600;
   background: #f1f5f9;
   color: #334155;
 }
 
-.cuenta-rol-administrador { background: #e7f0ff; color: #1d4ed8; }
-.cuenta-rol-encargado { background: #f3f0ff; color: #5b4bdb; }
-.cuenta-rol-inquilino { background: #ecfdf3; color: #15803d; }
-.cuenta-rol-propietario { background: #fff7ed; color: #b45309; }
+.cuenta-rol-administrador { background: #e9eff9; color: #3757af; }
+.cuenta-rol-encargado { background: #f2f0fb; color: #6155bf; }
+.cuenta-rol-inquilino { background: #edf8f1; color: #266f41; }
+.cuenta-rol-propietario { background: #faf5ee; color: #8f5122; }
 
 .cuenta-vacio { color: var(--muted); }
 
@@ -90,7 +90,7 @@
 .cuentas-acciones .btn-warning {
   background: white;
   color: var(--warn);
-  border-color: #fed7aa;
+  border-color: #ebd4b8;
 }
 
 .cuentas-acciones .btn-warning:hover:not(:disabled) { background: var(--warn-bg); }

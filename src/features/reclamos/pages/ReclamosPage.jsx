@@ -92,7 +92,6 @@ export function ReclamosPage() {
             <p className="page-subtitle">Gestión y seguimiento de reclamos de mantenimiento</p>
           </div>
         </div>
-        <Button variant="success" onClick={() => setCreando(true)}>Nuevo reclamo</Button>
       </div>
 
       <div className="rc-kpis">
@@ -140,6 +139,7 @@ export function ReclamosPage() {
         {hayFiltros && (
           <Button variant="secondary" size="small" onClick={limpiarFiltros}>Limpiar filtros</Button>
         )}
+        <Button variant="success" className="btn btn-success btn-medium boton-nuevo" onClick={() => setCreando(true)}>Nuevo reclamo</Button>
       </div>
 
       {loading && <div className="page-loading">Cargando reclamos...</div>}
@@ -179,7 +179,7 @@ export function ReclamosPage() {
                       </span>
                     </td>
                     <td>
-                      <div className="rc-principal">{reclamo.titulo}</div>
+                      <div className="rc-principal dato-clave">{reclamo.titulo}</div>
                     </td>
                     <td>{CATEGORIA_RECLAMO_LABELS[reclamo.categoria]}</td>
                     <td>

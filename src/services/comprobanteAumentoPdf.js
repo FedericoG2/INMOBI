@@ -5,15 +5,12 @@ const MESES = [
   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
 ];
 
-const AZUL = '0.114 0.306 0.847';
-const AZUL_SUAVE = '0.937 0.957 1';
-const TINTA = '0.059 0.090 0.165';
-const GRIS = '0.392 0.455 0.545';
-const LINEA = '0.886 0.910 0.941';
-const FONDO = '0.973 0.980 0.988';
-const BLANCO = '1 1 1';
-
-const MARGEN = 48;
+// Documento en blanco y negro: se lee e imprime igual en cualquier equipo.
+const TINTA = '0.10 0.10 0.10';
+const GRIS = '0.36 0.36 0.36';
+const LINEA = '0.76 0.76 0.76';
+const FONDO = '0.945 0.945 0.945';
+const MARGEN = 56;
 const ANCHO = 595 - MARGEN * 2;
 
 function literal(texto) {
@@ -33,18 +30,23 @@ function literal(texto) {
   return salida;
 }
 
-// Anchos aproximados de Helvetica, suficientes para alinear importes a la derecha.
-function anchoTexto(texto, tamano) {
+// Anchos de Helvetica en milésimas, para alinear los importes a la derecha.
+const ANCHOS = {
+  ' .,:;/!': 278, 'ijl': 222, 'ft': 278, 'I': 278, 'r()-': 333, 'cksvxyz': 500, 'J': 500,
+  'abdeghnopqu0123456789$_': 556, 'L': 556, 'FTZ': 611, 'ABEKPSVXY&': 667, 'CDHNRUw': 722,
+  'GOQ': 778, 'Mm': 833, '%': 889, 'W': 944,
+};
+
+function anchoTexto(texto, tamano, negrita = false) {
   let unidades = 0;
-  for (const c of String(texto).replace(/[  ]/g, ' ')) {
-    if (' .,:;ijl|!\''.includes(c)) unidades += 270;
-    else if ('()-ftrI/'.includes(c)) unidades += 333;
-    else if (c === '%') unidades += 889;
-    else if ('mwMW'.includes(c)) unidades += 833;
-    else if (c >= 'A' && c <= 'Z') unidades += 680;
-    else unidades += 556;
+  // Las letras acentuadas ocupan lo mismo que sin acento.
+  for (const c of String(texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, ' ')) {
+    const grupo = Object.keys(ANCHOS).find((letras) => letras.includes(c));
+    unidades += grupo ? ANCHOS[grupo] : 556;
   }
-  return (unidades / 1000) * tamano;
+  // La negrita es algo más ancha, salvo en números y signos.
+  const ajuste = negrita && /[a-zA-Z]/.test(texto) ? 1.07 : 1;
+  return (unidades / 1000) * tamano * ajuste;
 }
 
 function partirEnLineas(texto, tamano, anchoMaximo) {
@@ -69,12 +71,20 @@ function lienzo() {
     rect(x, y, ancho, alto, color) {
       ops.push(`${color} rg ${x} ${y} ${ancho} ${alto} re f`);
     },
-    linea(y, color = LINEA, x = MARGEN, ancho = ANCHO) {
-      ops.push(`${color} RG 0.8 w ${x} ${y} m ${x + ancho} ${y} l S`);
+    linea(y, color = LINEA, x = MARGEN, ancho = ANCHO, grosor = 0.6) {
+      ops.push(`${color} RG ${grosor} w ${x} ${y} m ${x + ancho} ${y} l S`);
     },
-    texto(valor, x, y, { tamano = 10, negrita = false, color = TINTA, derecha = false } = {}) {
-      const inicio = derecha ? x - anchoTexto(valor, tamano) : x;
-      ops.push(`BT ${color} rg /${negrita ? 'F2' : 'F1'} ${tamano} Tf 1 0 0 1 ${inicio.toFixed(2)} ${y} Tm (${literal(valor)}) Tj ET`);
+    marco(x, y, ancho, alto, color = LINEA) {
+      ops.push(`${color} RG 0.6 w ${x} ${y} ${ancho} ${alto} re S`);
+    },
+    vertical(x, y, alto, color = LINEA) {
+      ops.push(`${color} RG 0.6 w ${x} ${y} m ${x} ${y + alto} l S`);
+    },
+    // "serif" usa Times, solo para el membrete (siempre alineado a la izquierda).
+    texto(valor, x, y, { tamano = 10, negrita = false, color = TINTA, derecha = false, serif = false } = {}) {
+      const inicio = derecha ? x - anchoTexto(valor, tamano, negrita) : x;
+      const fuente = serif ? (negrita ? 'F4' : 'F3') : (negrita ? 'F2' : 'F1');
+      ops.push(`BT ${color} rg /${fuente} ${tamano} Tf 1 0 0 1 ${inicio.toFixed(2)} ${y} Tm (${literal(valor)}) Tj ET`);
     },
     contenido: () => ops.join('\n'),
   };
@@ -85,10 +95,12 @@ function armarPdf(stream) {
   const objetos = [
     '<< /Type /Catalog /Pages 2 0 R >>',
     '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
-    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R /F3 7 0 R /F4 8 0 R >> >> >>',
     `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`,
     fuente('Helvetica'),
     fuente('Helvetica-Bold'),
+    fuente('Times-Roman'),
+    fuente('Times-Bold'),
   ];
   let pdf = '%PDF-1.4\n';
   const offsets = objetos.map((objeto, indice) => {
@@ -161,100 +173,119 @@ export function generarComprobanteAumentoPdf({
   const pagina = lienzo();
   const derecha = MARGEN + ANCHO;
 
-  // Encabezado
-  pagina.rect(0, 746, 595, 96, AZUL);
-  pagina.texto('INMOBI', MARGEN, 796, { tamano: 22, negrita: true, color: BLANCO });
-  pagina.texto('Comprobante de aumento de alquiler', MARGEN, 774, { tamano: 11, color: BLANCO });
-  pagina.texto(periodo, derecha, 796, { tamano: 14, negrita: true, color: BLANCO, derecha: true });
-  pagina.texto(`Emitido el ${fechaEmision.toLocaleDateString('es-AR')}`, derecha, 774, { tamano: 10, color: BLANCO, derecha: true });
+  // Membrete
+  pagina.texto('Zitelli & Asociados S.R.L.', MARGEN, 790, { tamano: 20, negrita: true, serif: true });
+  pagina.texto('Administración de alquileres', MARGEN, 773, { tamano: 11, serif: true, color: GRIS });
+  pagina.texto(`Período: ${periodo}`, derecha, 790, { tamano: 10, negrita: true, derecha: true });
+  pagina.texto(`Fecha de emisión: ${fechaEmision.toLocaleDateString('es-AR')}`, derecha, 774, { tamano: 9, color: GRIS, derecha: true });
+  pagina.linea(758, TINTA, MARGEN, ANCHO, 1.4);
+  pagina.linea(754.5, TINTA, MARGEN, ANCHO, 0.5);
 
-  let y = 712;
+  pagina.texto('COMPROBANTE DE ACTUALIZACIÓN DE ALQUILER', MARGEN, 728, { tamano: 13, negrita: true });
+
+  let y = 698;
+  let seccion = 0;
   const titulo = (texto) => {
-    pagina.texto(texto.toUpperCase(), MARGEN, y, { tamano: 9, negrita: true, color: AZUL });
-    pagina.linea(y - 8);
-    y -= 28;
+    seccion += 1;
+    pagina.texto(`${seccion}. ${texto}`, MARGEN, y, { tamano: 10.5, negrita: true });
+    y -= 12;
   };
 
-  // Datos del contrato
+  // Datos del contrato, en una tabla con filas
   titulo('Datos del contrato');
   const origen = origenBase === 'aumento' ? 'aumento anterior' : 'inicio del contrato';
+  const inicioTabla = y;
+  const columnaValor = MARGEN + 128;
   [
     ['Inquilino', inquilino],
     ['Propietario', propietario],
     ['Inmueble', inmueble],
     ['Índice de ajuste', tipoAjuste],
     ['Cálculo desde', `${fechaCorta(fechaBase)} (${origen})`],
-  ].forEach(([etiqueta, valor]) => {
-    pagina.texto(etiqueta, MARGEN, y, { color: GRIS });
-    partirEnLineas(valor, 10, ANCHO - 130).forEach((linea, i) => {
-      if (i > 0) y -= 14;
-      pagina.texto(linea, MARGEN + 130, y, { negrita: true });
-    });
-    y -= 18;
+  ].forEach(([etiqueta, valor], i) => {
+    if (i > 0) pagina.linea(y);
+    const lineas = partirEnLineas(valor, 9.5, ANCHO - 140);
+    pagina.texto(etiqueta, MARGEN + 8, y - 13, { tamano: 9, color: GRIS });
+    lineas.forEach((linea, n) => pagina.texto(linea, columnaValor + 8, y - 13 - n * 12, { tamano: 9.5 }));
+    y -= 19 + (lineas.length - 1) * 12;
   });
+  pagina.marco(MARGEN, y, ANCHO, inicioTabla - y);
+  pagina.vertical(columnaValor, y, inicioTabla - y);
+  y -= 30;
 
-  // Resultado
-  y -= 10;
-  const altoCaja = 72;
-  pagina.rect(MARGEN, y - altoCaja, ANCHO, altoCaja, AZUL_SUAVE);
+  // Importes
+  titulo('Resultado de la actualización');
   const variacion = montoAnteriorValor > 0 && montoNuevoValor > 0
     ? `+${numero(((montoNuevoValor / montoAnteriorValor) - 1) * 100)} %`
     : '-';
-  const columnas = [MARGEN + 16, MARGEN + 190, MARGEN + 320];
+  const anchoColumna = ANCHO / 3;
+  pagina.rect(MARGEN, y - 18, ANCHO, 18, FONDO);
   [['Alquiler anterior', montoAnterior], ['Variación', variacion], ['Nuevo alquiler', montoNuevo]]
     .forEach(([etiqueta, valor], i) => {
-      pagina.texto(etiqueta, columnas[i], y - 24, { tamano: 9, color: GRIS });
-      pagina.texto(valor, columnas[i], y - 50, {
-        tamano: i === 2 ? 20 : 14,
-        negrita: true,
-        color: i === 2 ? AZUL : TINTA,
-      });
+      const x = MARGEN + anchoColumna * i + 8;
+      pagina.texto(etiqueta, x, y - 12, { tamano: 9, negrita: true, color: GRIS });
+      pagina.texto(valor, x, y - 36, { tamano: i === 2 ? 14 : 12, negrita: i === 2 });
+      if (i > 0) pagina.vertical(MARGEN + anchoColumna * i, y - 46, 46);
     });
-  y -= altoCaja + 30;
+  pagina.linea(y - 18);
+  pagina.marco(MARGEN, y - 46, ANCHO, 46);
+  y -= 76;
 
   // Detalle del cálculo
   titulo('Detalle del cálculo');
   const { columnas: encabezados, filas } = filasDelDetalle(detalle);
   if (filas.length > 0) {
-    pagina.rect(MARGEN, y - 6, ANCHO, 20, FONDO);
-    pagina.texto(encabezados[0], MARGEN + 8, y, { tamano: 9, negrita: true, color: GRIS });
-    pagina.texto(encabezados[1], MARGEN + 210, y, { tamano: 9, negrita: true, color: GRIS });
-    pagina.texto(encabezados[2], derecha - 8, y, { tamano: 9, negrita: true, color: GRIS, derecha: true });
-    y -= 22;
+    const inicio = y;
     // Con muchos meses se achica el alto de fila para que todo entre en una página.
-    const salto = filas.length > 8 ? 15 : 20;
+    const salto = filas.length > 8 ? 15 : 18;
+    pagina.rect(MARGEN, y - 18, ANCHO, 18, FONDO);
+    pagina.texto(encabezados[0], MARGEN + 8, y - 12, { tamano: 9, negrita: true, color: GRIS });
+    pagina.texto(encabezados[1], MARGEN + 210, y - 12, { tamano: 9, negrita: true, color: GRIS });
+    pagina.texto(encabezados[2], derecha - 8, y - 12, { tamano: 9, negrita: true, color: GRIS, derecha: true });
+    y -= 18;
     filas.forEach(([primera, segunda, tercera]) => {
-      pagina.texto(primera, MARGEN + 8, y);
-      pagina.texto(segunda, MARGEN + 210, y, { color: GRIS });
-      pagina.texto(tercera, derecha - 8, y, { negrita: true, derecha: true });
-      pagina.linea(y - 6);
+      pagina.linea(y);
+      pagina.texto(primera, MARGEN + 8, y - salto + 5.5, { tamano: 9.5 });
+      pagina.texto(segunda, MARGEN + 210, y - salto + 5.5, { tamano: 9.5, color: GRIS });
+      pagina.texto(tercera, derecha - 8, y - salto + 5.5, { tamano: 9.5, derecha: true });
       y -= salto;
     });
+    pagina.marco(MARGEN, y, ANCHO, inicio - y);
   }
 
-  y -= 6;
+  y -= 18;
   const totales = [
     detalle?.factor ? ['Factor de actualización', Number(detalle.factor).toFixed(4).replace('.', ',')] : null,
     ['Monto calculado', montoCalculado],
     montoCalculado !== montoNuevo ? ['Monto acordado (con redondeo)', montoNuevo] : null,
   ].filter(Boolean);
-  totales.forEach(([etiqueta, valor]) => {
-    pagina.texto(etiqueta, MARGEN + 210, y, { color: GRIS });
-    pagina.texto(valor, derecha - 8, y, { negrita: true, derecha: true });
-    y -= 18;
+  totales.forEach(([etiqueta, valor], i) => {
+    const ultimo = i === totales.length - 1;
+    pagina.texto(etiqueta, MARGEN + 210, y, { tamano: 9.5, negrita: ultimo, color: ultimo ? TINTA : GRIS });
+    pagina.texto(valor, derecha - 8, y, { tamano: 9.5, negrita: ultimo, derecha: true });
+    y -= 16;
   });
 
   if (observaciones) {
     y -= 14;
     titulo('Observaciones');
-    partirEnLineas(observaciones, 10, ANCHO - 20).slice(0, 5).forEach((linea) => {
-      pagina.texto(linea, MARGEN, y);
-      y -= 15;
+    y -= 4;
+    partirEnLineas(observaciones, 9.5, ANCHO - 20).slice(0, 5).forEach((linea) => {
+      pagina.texto(linea, MARGEN, y, { tamano: 9.5 });
+      y -= 13;
     });
   }
 
-  pagina.linea(60);
-  pagina.texto('Documento informativo emitido por Inmobi. No reemplaza al contrato de locación.', MARGEN, 44, { tamano: 8, color: GRIS });
+  // Firmas, si queda lugar en la página
+  if (y > 150) {
+    [[MARGEN, 'Por la inmobiliaria'], [derecha - 180, 'Inquilino']].forEach(([x, rotulo]) => {
+      pagina.linea(104, TINTA, x, 180, 0.5);
+      pagina.texto(rotulo, x, 91, { tamano: 8.5, color: GRIS });
+      pagina.texto('Firma y aclaración', x, 80, { tamano: 8.5, color: GRIS });
+    });
+  }
 
+  pagina.linea(58);
+  pagina.texto('Documento informativo generado por el sistema Inmobi. No reemplaza al contrato de locación.', MARGEN, 44, { tamano: 8, color: GRIS });
   return armarPdf(pagina.contenido());
 }

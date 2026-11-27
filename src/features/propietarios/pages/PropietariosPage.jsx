@@ -88,9 +88,7 @@ export function PropietariosPage() {
 
   return (
     <div className="ls-pagina">
-      <Encabezado icono="users" titulo="Propietarios" subtitulo="Dueños de los inmuebles en administración">
-        <Button variant="success" onClick={() => abrirForm()}>Nuevo propietario</Button>
-      </Encabezado>
+      <Encabezado icono="users" titulo="Propietarios" subtitulo="Dueños de los inmuebles en administración" />
 
       {error && (
         <div className="error-message">
@@ -132,6 +130,7 @@ export function PropietariosPage() {
         {hayFiltros && (
           <Button variant="secondary" size="small" onClick={() => { setBusqueda(''); setTipo(''); setCartera(''); }}>Limpiar filtros</Button>
         )}
+        <Button variant="success" className="btn btn-success btn-medium boton-nuevo" onClick={() => abrirForm()}>Nuevo propietario</Button>
       </div>
 
       {filtrados.length === 0 ? (
@@ -164,7 +163,7 @@ export function PropietariosPage() {
                 return (
                   <tr key={propietario.id} className="ls-fila" onClick={() => setDetalleId(propietario.id)}>
                     <td>
-                      <div className="ls-principal">{nombrePropietario(propietario)}</div>
+                      <div className="ls-principal dato-clave">{nombrePropietario(propietario)}</div>
                       <span className="ls-pildora">
                         {propietario.tipo_persona === 'juridica' ? 'CUIT' : 'DNI'} {propietario.documento}
                       </span>

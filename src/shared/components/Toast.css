@@ -48,7 +48,7 @@
 
 .toast-cuerpo strong {
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .toast-cuerpo span {
@@ -78,43 +78,43 @@
 }
 
 .toast-success {
-  border-color: #86efac;
-  background: #ecfdf3;
-  color: #166534;
+  border-color: #97deb1;
+  background: #edf8f1;
+  color: #235837;
 }
 
 .toast-success .toast-icono {
-  background: #16a34a;
+  background: #2a844b;
 }
 
 .toast-error {
-  border-color: #fca5a5;
-  background: #fef2f2;
-  color: #991b1b;
+  border-color: #eeb3b3;
+  background: #faf1f1;
+  color: #7d2c2c;
 }
 
 .toast-error .toast-icono {
-  background: #dc2626;
+  background: #b53e3e;
 }
 
 .toast-warning {
-  border-color: #fcd34d;
-  background: #fffbeb;
-  color: #92400e;
+  border-color: #ddbe59;
+  background: #faf7ec;
+  color: #7d4523;
 }
 
 .toast-warning .toast-icono {
-  background: #d97706;
+  background: #ac6e25;
 }
 
 .toast-info {
-  border-color: #bfdbfe;
-  background: #eff6ff;
-  color: #1e40af;
+  border-color: #c9daf0;
+  background: #eff4fb;
+  color: #32488f;
 }
 
 .toast-info .toast-icono {
-  background: #2563eb;
+  background: #3865c8;
 }
 
 .toast-progreso {

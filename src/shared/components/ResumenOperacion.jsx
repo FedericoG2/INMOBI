@@ -2,7 +2,7 @@ import { Icon } from './Icons';
 import './ResumenOperacion.css';
 
 // Resumen de lo que se está por confirmar: datos, importes y efectos.
-export function ResumenOperacion({ datos, montos, efectos }) {
+export function ResumenOperacion({ datos, montos = [], efectos }) {
   return (
     <div className="rop">
       <dl className="rop-datos">
@@ -14,7 +14,7 @@ export function ResumenOperacion({ datos, montos, efectos }) {
         ))}
       </dl>
 
-      <div className="rop-montos">
+      {montos.length > 0 && <div className="rop-montos">
         {montos.map((monto, indice) => (
           <div key={monto.etiqueta} className="rop-monto-grupo">
             {indice > 0 && <span className="rop-flecha" aria-hidden="true">→</span>}
@@ -25,7 +25,7 @@ export function ResumenOperacion({ datos, montos, efectos }) {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
 
       <ul className="rop-efectos">
         {efectos.map((efecto) => (

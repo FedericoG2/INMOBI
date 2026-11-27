@@ -138,7 +138,6 @@ export function PropiedadesPage() {
             <p className="page-subtitle">Inmuebles en administración y su situación actual</p>
           </div>
         </div>
-        <Button variant="success" onClick={() => abrirForm()}>Nueva propiedad</Button>
       </div>
 
       {error && (
@@ -187,6 +186,7 @@ export function PropiedadesPage() {
         {hayFiltros && (
           <Button variant="secondary" size="small" onClick={limpiarFiltros}>Limpiar filtros</Button>
         )}
+        <Button variant="success" className="btn btn-success btn-medium boton-nuevo" onClick={() => abrirForm()}>Nueva propiedad</Button>
       </div>
 
       {filtradas.length === 0 ? (

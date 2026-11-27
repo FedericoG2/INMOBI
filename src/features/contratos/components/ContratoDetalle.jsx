@@ -37,6 +37,7 @@ import { Dato, Tarjeta } from '../../../shared/components/Detalle';
 import '../../../shared/styles/forms.css';
 import '../../../shared/components/SelectBuscable.css';
 import './ContratoDetalle.css';
+import { CierreContrato } from './CierreContrato';
 
 export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
   const { contrato, documentos, aumentos, periodos, eliminacion, loading, error, recargar } = useContratoDetalle(contratoId);
@@ -306,11 +307,6 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
                         <span className={`cd-estado cd-estado-${vencido ? 'vencido' : periodo.estado}`}>
                           {vencido ? 'Vencido' : ESTADO_PERIODO_ALQUILER_LABELS[periodo.estado] || periodo.estado}
                         </span>
-                        {periodo.estado === 'pagado' && periodo.confirmado_en && (
-                          <small className="cd-pagado-el">
-                            el {new Date(periodo.confirmado_en).toLocaleDateString('es-AR')}
-                          </small>
-                        )}
                       </td>
                     </tr>
                   );
@@ -482,14 +478,9 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
           Cerrar
         </Button>
         {contrato.estado === 'activo' && (
-          <>
-            <Button variant="warning" onClick={() => abrirModalAccion('rescindir')}>
-              Rescindir contrato
-            </Button>
-            <Button variant="success" onClick={() => abrirModalAccion('finalizar')}>
-              Finalizar contrato
-            </Button>
-          </>
+          <Button onClick={() => abrirModalAccion('cierre')}>
+            Finalizar o Rescindir
+          </Button>
         )}
         {contrato.estado === 'programado' && (
           <Button variant="warning" onClick={() => abrirModalAccion('cancelar')}>
@@ -503,7 +494,18 @@ export function ContratoDetalle({ contratoId, onCerrar, onActualizado }) {
         )}
       </div>
 
-      {modalAccion && (
+      {modalAccion === 'cierre' && (
+        <CierreContrato
+          inquilino={nombreInquilino(inquilino)}
+          propiedad={direccionPropiedad(propiedad)}
+          fechaFin={formatearFecha(contrato.fecha_fin)}
+          antesDeTiempo={contrato.fecha_fin > hoy}
+          onConfirmar={handleAccion}
+          onCancelar={() => setModalAccion(null)}
+        />
+      )}
+
+      {modalAccion === 'cancelar' && (
         <ModalAccionContrato
           accion={modalAccion}
           resumen={`${nombreInquilino(inquilino)} · ${direccionPropiedad(propiedad)}`}
@@ -556,32 +558,6 @@ function formatearMonto(monto) {
 }
 
 const ACCIONES_CONTRATO = {
-  finalizar: {
-    titulo: 'Finalizar contrato',
-    boton: 'Finalizar contrato',
-    variante: 'success',
-    tono: 'success',
-    descripcion: 'Vas a finalizar el contrato: cierre normal por haber llegado a su fin.',
-    efectos: [
-      'El contrato pasa a estado Finalizado.',
-      'La propiedad vuelve a quedar disponible para alquilar.',
-      'Se eliminan los períodos de alquiler pendientes posteriores a hoy (los pagados y los del mes en curso se conservan).',
-      'Una vez confirmado, no se puede reabrir.',
-    ],
-  },
-  rescindir: {
-    titulo: 'Rescindir contrato',
-    boton: 'Rescindir contrato',
-    variante: 'warning',
-    tono: 'warning',
-    descripcion: 'Vas a rescindir el contrato: cortarlo antes de su fecha de fin.',
-    efectos: [
-      'El contrato pasa a estado Rescindido.',
-      'La propiedad vuelve a quedar disponible para alquilar.',
-      'Se eliminan los períodos de alquiler pendientes posteriores a hoy (los pagados y los del mes en curso se conservan).',
-      'Una vez confirmado, no se puede reabrir.',
-    ],
-  },
   cancelar: {
     titulo: 'Cancelar contrato',
     boton: 'Cancelar contrato',

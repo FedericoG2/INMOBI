@@ -588,7 +588,6 @@ export function AumentoDetalle({ aumentoId, onCerrar, onActualizado }) {
             ]}
             efectos={[
               { icono: 'file', texto: 'El contrato pasa a tener el nuevo monto.' },
-              { icono: 'calendar', texto: 'Se actualizan los períodos pendientes desde ese mes.' },
               { icono: 'receipt', texto: 'Se genera y guarda el comprobante.' },
             ]}
           />

@@ -36,7 +36,7 @@ export function ProtectedRoute({ children, roles }) {
         justifyContent: 'center',
         minHeight: '100vh',
         fontSize: '1.25rem',
-        color: '#667eea',
+        color: '#7b8bd5',
       }}>
         Cargando...
       </div>

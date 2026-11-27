@@ -24,8 +24,8 @@
 .selectb-disparador:focus-visible,
 .selectb-disparador.is-open {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: #3865c8;
+  box-shadow: 0 0 0 3px rgba(56, 101, 200, 0.15);
 }
 
 .selectb-disparador.has-error {
@@ -61,7 +61,7 @@
   background: var(--blue-100);
   color: var(--blue-700);
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .selectb-texto {

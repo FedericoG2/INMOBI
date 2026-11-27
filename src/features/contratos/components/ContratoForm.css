@@ -63,11 +63,11 @@
 }
 
 .input-error {
-  border-color: #dc2626 !important;
+  border-color: #b53e3e !important;
 }
 
 .error-message {
-  color: #dc2626;
+  color: #b53e3e;
   font-size: 0.8125rem;
   margin-top: -0.125rem;
 }

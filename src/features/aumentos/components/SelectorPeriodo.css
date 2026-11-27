@@ -6,17 +6,17 @@
   gap: 0.45rem;
   min-height: 40px;
   padding: 0.45rem 0.85rem;
-  border: 1px solid #bfdbfe;
+  border: 1px solid #c9daf0;
   border-radius: 8px;
-  background: #eff6ff;
-  color: #1e40af;
+  background: #eff4fb;
+  color: #32488f;
   font: inherit;
   font-size: 0.85rem;
   cursor: pointer;
 }
 
 .selper-boton:hover:not(:disabled),
-.selper-boton.is-abierto { border-color: #2563eb; }
+.selper-boton.is-abierto { border-color: #3865c8; }
 .selper-boton:disabled { opacity: 0.6; cursor: default; }
 
 .selper-flecha {
@@ -67,7 +67,7 @@
   cursor: pointer;
 }
 
-.selper-anio button:hover:not(:disabled) { border-color: #2563eb; color: #1d4ed8; }
+.selper-anio button:hover:not(:disabled) { border-color: #3865c8; color: #3757af; }
 .selper-anio button:disabled { opacity: 0.35; cursor: default; }
 
 .selper-meses {
@@ -88,10 +88,10 @@
   cursor: pointer;
 }
 
-.selper-mes:hover:not(:disabled) { background: #eff6ff; color: #1d4ed8; }
-.selper-mes.is-vigente { border-color: #2563eb; color: #1d4ed8; }
+.selper-mes:hover:not(:disabled) { background: #eff4fb; color: #3757af; }
+.selper-mes.is-vigente { border-color: #3865c8; color: #3757af; }
 .selper-mes.is-elegido,
-.selper-mes.is-elegido:hover:not(:disabled) { background: #1d4ed8; color: #ffffff; }
+.selper-mes.is-elegido:hover:not(:disabled) { background: #3757af; color: #ffffff; }
 .selper-mes:disabled { background: transparent; color: #cbd5e1; cursor: default; }
 
 .selper-volver {
@@ -101,10 +101,10 @@
   border: 0;
   border-top: 1px solid #e2e8f0;
   background: transparent;
-  color: #1d4ed8;
+  color: #3757af;
   font: inherit;
   font-size: 0.82rem;
-  font-weight: 650;
+  font-weight: 600;
   cursor: pointer;
 }
 

@@ -1,13 +1,13 @@
 .contratos-page { max-width: 1280px; }
-.celda-principal { font-weight: 650; }
+.celda-principal { font-weight: 400; }
 .celda-secundaria { color: var(--muted); font-size: 0.82rem; margin-top: 0.15rem; }
-.celda-monto { font-weight: 700; white-space: nowrap; }
+.celda-monto { font-weight: 600; white-space: nowrap; }
 
 .ct-fila { cursor: pointer; }
 
 .ct-principal {
   color: #0f172a;
-  font-weight: 650;
+  font-weight: 400;
 }
 
 .ct-secundaria {
@@ -57,24 +57,24 @@
   padding: 0.1rem 0.55rem;
   border-radius: 999px;
   font-size: 0.74rem;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
 }
 
-.ct-chip-info { background: #e0f2fe; color: #0369a1; }
-.ct-chip-pronto { background: #fff7ed; color: #b45309; }
+.ct-chip-info { background: #e3eff7; color: #1c6288; }
+.ct-chip-pronto { background: #faf5ee; color: #8f5122; }
 
 .ct-rango { display: flex; align-items: center; gap: 0.45rem; white-space: nowrap; }
 .ct-rango span { color: #94a3b8; font-weight: 500; }
 
 .ct-ajuste {
   padding: 0.05rem 0.45rem;
-  border: 1px solid #bfdbfe;
+  border: 1px solid #c9daf0;
   border-radius: 6px;
-  background: #eff6ff;
-  color: #1e40af;
+  background: #eff4fb;
+  color: #32488f;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .contratos-tabla th.ct-acciones,
@@ -102,10 +102,10 @@
   border-radius: 16px;
   background: var(--blue-700);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(29, 78, 216, 0.28);
+  box-shadow: 0 8px 20px rgba(55, 87, 175, 0.28);
 }
 
 /* Indicadores por estado, con los colores de las etiquetas */
 .ct-kpi-activo .ls-kpi-icono { background: var(--ok-bg); color: var(--ok); }
-.ct-kpi-programado .ls-kpi-icono { background: #e0f2fe; color: #0369a1; }
+.ct-kpi-programado .ls-kpi-icono { background: #e3eff7; color: #1c6288; }
 .ct-kpi-finalizado .ls-kpi-icono { background: #f1f5f9; color: #475569; }

@@ -1,22 +1,22 @@
 :root {
   --blue-950: #071833;
-  --blue-900: #0b2f86;
-  --blue-800: #1340b0;
-  --blue-700: #1d4ed8;
-  --blue-600: #2563eb;
-  --blue-100: #e7f0ff;
-  --blue-50: #f3f7ff;
+  --blue-900: #1f3772;
+  --blue-800: #29468e;
+  --blue-700: #3757af;
+  --blue-600: #3865c8;
+  --blue-100: #e9eff9;
+  --blue-50: #f2f5fc;
   --ink: #0f172a;
   --muted: #64748b;
   --line: #e6ebf2;
   --bg: #f4f7fb;
   --card: #ffffff;
-  --danger: #dc2626;
-  --danger-bg: #fef2f2;
-  --ok: #15803d;
-  --ok-bg: #ecfdf3;
-  --warn: #b45309;
-  --warn-bg: #fff7ed;
+  --danger: #b53e3e;
+  --danger-bg: #faf1f1;
+  --ok: #266f41;
+  --ok-bg: #edf8f1;
+  --warn: #8f5122;
+  --warn-bg: #faf5ee;
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
   --sans: "Segoe UI", system-ui, sans-serif;
   color: var(--ink);
@@ -38,8 +38,8 @@ body { margin: 0; background: var(--bg); color: var(--ink); }
 }
 
 h1, h2, h3, p { margin: 0; }
-h1 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
-h2 { font-size: 1.15rem; font-weight: 700; color: var(--ink); }
+h1 { font-size: 1.65rem; font-weight: 600; letter-spacing: -0.03em; color: var(--ink); }
+h2 { font-size: 1.15rem; font-weight: 600; color: var(--ink); }
 button, input, select, textarea { font: inherit; color: inherit; }
 a { color: inherit; }
 
@@ -58,7 +58,7 @@ a { color: inherit; }
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .filtros-container,
@@ -103,9 +103,9 @@ select.filter-select,
 select.filter-select:hover { border-color: #94a3b8; }
 
 select.filter-select:has(option:checked:not([value=""])) {
-  border-color: #2563eb;
-  background-color: #eff6ff;
-  color: #1d4ed8;
+  border-color: #3865c8;
+  background-color: #eff4fb;
+  color: #3757af;
 }
 
 select.filter-select option { background: #ffffff; color: #0f172a; font-weight: 500; }
@@ -127,7 +127,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--blue-600);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 3px rgba(56, 101, 200, 0.15);
 }
 
 .table-container,
@@ -158,7 +158,7 @@ textarea:focus {
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 600;
   border-bottom: 1px solid var(--line);
 }
 
@@ -188,19 +188,19 @@ textarea:focus {
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   background: var(--blue-100);
   color: var(--blue-700);
   text-transform: none;
   letter-spacing: 0;
 }
 
-.badge-fisica { background: #f3f0ff; color: #5b4bdb; }
-.badge-juridica { background: #e8f1ff; color: #1d4ed8; }
+.badge-fisica { background: #f2f0fb; color: #6155bf; }
+.badge-juridica { background: #eaf0f9; color: #3757af; }
 .badge-disponible, .estado-activo, .estado-pagado { background: var(--ok-bg); color: var(--ok); }
 .badge-mantenimiento, .estado-vencido, .estado-pendiente { background: var(--warn-bg); color: var(--warn); }
-.badge-reservada, .estado-programado { background: #e0f2fe; color: #0369a1; }
-.badge-alquilada { background: #ede9fe; color: #6d28d9; }
+.badge-reservada, .estado-programado { background: #e3eff7; color: #1c6288; }
+.badge-alquilada { background: #edeaf9; color: #6c3fb2; }
 .estado-finalizado { background: #f1f5f9; color: #475569; }
 .estado-cancelado, .estado-rescindido { background: var(--danger-bg); color: var(--danger); }
 
@@ -224,8 +224,8 @@ textarea:focus {
 .page-error,
 .periodo-error-box {
   background: var(--danger-bg);
-  color: #991b1b;
-  border: 1px solid #fecaca;
+  color: #7d2c2c;
+  border: 1px solid #f2d2d2;
   border-radius: 10px;
   padding: 0.85rem 1rem;
   margin-bottom: 1rem;
@@ -285,8 +285,8 @@ textarea:focus {
 .confirm-dialog { text-align: left; }
 .confirm-warning {
   margin-top: 0.75rem;
-  background: #fff7ed;
-  color: #9a3412;
+  background: #faf5ee;
+  color: #843f28;
   padding: 0.75rem;
   border-radius: 8px;
 }
@@ -303,4 +303,37 @@ textarea:focus {
 @media (max-width: 800px) {
   .page-header { flex-direction: column; }
   .paginacion { flex-direction: column; align-items: flex-start; }
+}
+
+/* Jerarquía tipográfica: 400 para el contenido y 600 para lo importante */
+strong,
+b,
+h1,
+h2,
+h3 { font-weight: 600; }
+
+.data-table,
+.contratos-tabla,
+.alquileres-tabla { font-variant-numeric: tabular-nums; }
+
+.data-table .dato-clave,
+.contratos-tabla .dato-clave,
+.alquileres-tabla .dato-clave { font-weight: 600; }
+
+.ls-codigo,
+.pr-codigo,
+.ct-codigo,
+.al-codigo,
+.au-codigo,
+.rc-codigo { font-weight: 600; }
+
+/* Botón de alta: extremo derecho de la fila de filtros, justo arriba de la grilla */
+.filtros-container > .boton-nuevo,
+.page-filters > .boton-nuevo {
+  height: 42px;
+  margin-left: auto;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }

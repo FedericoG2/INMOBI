@@ -100,9 +100,7 @@ export function InquilinosPage() {
 
   return (
     <div className="ls-pagina">
-      <Encabezado icono="user" titulo="Inquilinos" subtitulo="Locatarios y sus contratos">
-        <Button variant="success" onClick={() => abrirForm()}>Nuevo inquilino</Button>
-      </Encabezado>
+      <Encabezado icono="user" titulo="Inquilinos" subtitulo="Locatarios y sus contratos" />
 
       {error && (
         <div className="error-message">
@@ -145,6 +143,7 @@ export function InquilinosPage() {
         {hayFiltros && (
           <Button variant="secondary" size="small" onClick={limpiarFiltros}>Limpiar filtros</Button>
         )}
+        <Button variant="success" className="btn btn-success btn-medium boton-nuevo" onClick={() => abrirForm()}>Nuevo inquilino</Button>
       </div>
 
       {filtrados.length === 0 ? (
@@ -177,7 +176,7 @@ export function InquilinosPage() {
                 return (
                   <tr key={inquilino.id} className="ls-fila" onClick={() => setDetalleId(inquilino.id)}>
                     <td>
-                      <div className="ls-principal">{nombreInquilino(inquilino)}</div>
+                      <div className="ls-principal dato-clave">{nombreInquilino(inquilino)}</div>
                       <span className="ls-pildora">
                         {inquilino.tipo_persona === 'juridica' ? 'CUIT' : 'DNI'} {inquilino.documento}
                       </span>

@@ -32,9 +32,9 @@
 }
 
 .aumento-error-box {
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #991b1b;
+  background: #faf1f1;
+  border: 1px solid #eeb3b3;
+  color: #7d2c2c;
   padding: 0.75rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -140,7 +140,7 @@
 .monto-final {
   color: var(--blue-700);
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .calculo-ipc ul,
@@ -159,9 +159,9 @@
 }
 
 .error-box {
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #991b1b;
+  background: #faf1f1;
+  border: 1px solid #eeb3b3;
+  color: #7d2c2c;
   padding: 0.75rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -228,10 +228,10 @@
 .detalle-ayuda {
   margin: 0;
   padding: 0.75rem 1rem;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background: #eff4fb;
+  border: 1px solid #c9daf0;
   border-radius: 6px;
-  color: #1e40af;
+  color: #32488f;
   font-size: 0.875rem;
   text-align: center;
 }
@@ -250,10 +250,10 @@
 
 .ad-faltantes {
   padding: 0.85rem 1rem;
-  border: 1px solid #fcd34d;
+  border: 1px solid #ddbe59;
   border-radius: 10px;
-  background: #fffbeb;
-  color: #92400e;
+  background: #faf7ec;
+  color: #7d4523;
   font-size: 0.88rem;
 }
 
@@ -286,12 +286,12 @@
 .ad-redondeo button:hover:not(:disabled) { border-color: #94a3b8; }
 .ad-redondeo small { color: var(--muted); font-size: 0.78rem; }
 .ad-redondeo strong { color: #0f172a; font-size: 1rem; white-space: nowrap; }
-.ad-redondeo button.is-elegido { border-color: #2563eb; background: #eff6ff; box-shadow: 0 0 0 1px #2563eb; }
-.ad-redondeo button.is-elegido strong { color: #1d4ed8; }
+.ad-redondeo button.is-elegido { border-color: #3865c8; background: #eff4fb; box-shadow: 0 0 0 1px #3865c8; }
+.ad-redondeo button.is-elegido strong { color: #3757af; }
 @media (max-width: 520px) { .ad-redondeo { grid-template-columns: 1fr; } }
 
 /* Renglón que aparece en el cálculo cuando se elige un redondeo */
-.ad-redondeado { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.7rem; padding: 0.65rem 0.9rem; border: 1px solid #bfdbfe; border-radius: 10px; background: #eff6ff; text-align: left; }
-.ad-redondeado span { display: flex; flex-direction: column; color: #0f172a; font-size: 0.9rem; font-weight: 650; }
+.ad-redondeado { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.7rem; padding: 0.65rem 0.9rem; border: 1px solid #c9daf0; border-radius: 10px; background: #eff4fb; text-align: left; }
+.ad-redondeado span { display: flex; flex-direction: column; color: #0f172a; font-size: 0.9rem; font-weight: 600; }
 .ad-redondeado small { color: #475569; font-size: 0.8rem; font-weight: 500; }
-.ad-redondeado > strong { color: #1d4ed8; font-size: 1.15rem; white-space: nowrap; }
+.ad-redondeado > strong { color: #3757af; font-size: 1.15rem; white-space: nowrap; }

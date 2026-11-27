@@ -20,7 +20,7 @@
   padding-bottom: 0.65rem;
   border-bottom: 1px solid #e2e8f0;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--blue-700);
@@ -67,8 +67,8 @@
 .form-section .form-group select:focus,
 .form-section .form-group textarea:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: #3865c8;
+  box-shadow: 0 0 0 3px rgba(56, 101, 200, 0.15);
 }
 
 .form-section .form-group input:disabled,
@@ -108,10 +108,10 @@
   gap: 0.55rem;
   margin: 0;
   padding: 0.65rem 0.8rem;
-  border: 1px solid #fcd34d;
+  border: 1px solid #ddbe59;
   border-radius: 8px;
-  background: #fffbeb;
-  color: #92400e;
+  background: #faf7ec;
+  color: #7d4523;
   font-size: 0.88rem;
   font-weight: 600;
 }
@@ -128,15 +128,15 @@
   align-self: flex-start;
   margin: 0;
   padding: 0.4rem 0.75rem;
-  border: 1px solid #bfdbfe;
+  border: 1px solid #c9daf0;
   border-radius: 8px;
-  background: #eff6ff;
-  color: #1e40af;
+  background: #eff4fb;
+  color: #32488f;
   font-size: 0.85rem;
 }
 
 .form-section .form-info strong {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .form-section .form-row.form-row-3 {
@@ -152,8 +152,8 @@
   padding: 0.85rem 1rem;
   margin-bottom: 1rem;
   background: var(--danger-bg);
-  color: #991b1b;
-  border: 1px solid #fecaca;
+  color: #7d2c2c;
+  border: 1px solid #f2d2d2;
   border-radius: 10px;
   font-size: 0.9rem;
 }
@@ -163,7 +163,7 @@
   margin-bottom: 1rem;
   background: var(--warn-bg);
   color: var(--warn);
-  border: 1px solid #fed7aa;
+  border: 1px solid #ebd4b8;
   border-radius: 10px;
   font-size: 0.9rem;
 }
@@ -207,7 +207,7 @@
 .form-section .radio-label input[type="radio"]:checked + span {
   background: var(--blue-700);
   color: white;
-  box-shadow: 0 1px 3px rgba(29, 78, 216, 0.3);
+  box-shadow: 0 1px 3px rgba(55, 87, 175, 0.3);
 }
 
 .form-section .radio-label input[type="radio"]:disabled + span {
@@ -271,7 +271,7 @@
   background: #e2e8f0;
   color: #475569;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .wizard-step.is-active .wizard-step-num {
@@ -369,8 +369,8 @@
 
 .resumen-grid .resumen-encabezado {
   padding: 0.7rem 1rem;
-  border-bottom: 2px solid #bfdbfe;
-  background: #eff6ff;
+  border-bottom: 2px solid #c9daf0;
+  background: #eff4fb;
 }
 
 .resumen-lista {
@@ -427,7 +427,7 @@
 .resumen-lista .destacado dd {
   color: var(--blue-700);
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 @media (max-width: 560px) {
@@ -465,7 +465,7 @@
   padding-bottom: 0.65rem;
   border-bottom: 1px solid #e2e8f0;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--blue-700);

@@ -17,10 +17,10 @@
   align-items: center;
   gap: 0.45rem;
   padding: 0.35rem 0.75rem;
-  border: 1px solid #bfdbfe;
+  border: 1px solid #c9daf0;
   border-radius: 8px;
-  background: #eff6ff;
-  color: #1e40af;
+  background: #eff4fb;
+  color: #32488f;
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -52,7 +52,7 @@
   margin: 0;
   color: var(--blue-700);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -75,7 +75,7 @@
   background: var(--blue-100);
   color: var(--blue-700);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
 }
 
@@ -120,14 +120,14 @@
 }
 
 .cd-destacado {
-  border-color: #bfdbfe;
+  border-color: #c9daf0;
   background: var(--blue-50);
 }
 
 .cd-destacado dd {
   color: var(--blue-700);
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .cd-vacio {
@@ -169,11 +169,11 @@
 .cd-aplicado {
   padding: 0.1rem 0.5rem;
   border-radius: 999px;
-  background: #dcfce7;
-  color: #166534;
+  background: #e0f4e7;
+  color: #235837;
   font-size: 0.7rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .cd-tabla-contenedor {
@@ -220,40 +220,40 @@
   padding: 0.12rem 0.55rem;
   border-radius: 999px;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .cd-estado-pendiente {
-  background: #fff7ed;
-  color: #b45309;
+  background: #faf5ee;
+  color: #8f5122;
 }
 
 .cd-estado-revisado {
-  background: #e0f2fe;
-  color: #0369a1;
+  background: #e3eff7;
+  color: #1c6288;
 }
 
 .cd-estado-confirmado {
-  background: #dcfce7;
-  color: #166534;
+  background: #e0f4e7;
+  color: #235837;
 }
 
 .cd-cierre {
-  border-color: #fde68a;
-  background: #fffbeb;
+  border-color: #ebdb9c;
+  background: #faf7ec;
 }
 
 .cd-cierre .cd-tarjeta-encabezado {
-  border-bottom-color: #fde68a;
+  border-bottom-color: #ebdb9c;
 }
 
 .cd-cierre .cd-tarjeta-titulo h3 {
-  color: #b45309;
+  color: #8f5122;
 }
 
 .cd-cierre .cd-icono {
-  background: #fef3c7;
-  color: #b45309;
+  background: #f2ebcf;
+  color: #8f5122;
 }
 
 .cd-doc-acciones {
@@ -292,13 +292,13 @@
   background: var(--blue-100);
   color: var(--blue-700);
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.03em;
 }
 
 .cd-doc-ext.es-pdf {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: #f7e5e5;
+  color: #963232;
 }
 
 .cd-doc-info {
@@ -386,19 +386,13 @@
 }
 
 .cd-estado-pagado {
-  background: #dcfce7;
-  color: #166534;
+  background: #e0f4e7;
+  color: #235837;
 }
 
 .cd-estado-vencido {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.cd-pagado-el {
-  margin-left: 0.4rem;
-  color: var(--muted);
-  font-size: 0.76rem;
+  background: #f7e5e5;
+  color: #963232;
 }
 
 .cd-fila-proxima td {
@@ -415,7 +409,7 @@
 
 .cd-aviso p {
   margin: 0 0 0.35rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .cd-aviso .cd-aviso-contrato {
@@ -433,21 +427,21 @@
 }
 
 .cd-aviso-success {
-  border-color: #86efac;
-  background: #ecfdf3;
-  color: #166534;
+  border-color: #97deb1;
+  background: #edf8f1;
+  color: #235837;
 }
 
 .cd-aviso-danger {
-  border-color: #fca5a5;
-  background: #fef2f2;
-  color: #991b1b;
+  border-color: #eeb3b3;
+  background: #faf1f1;
+  color: #7d2c2c;
 }
 
 .cd-aviso-warning {
-  border-color: #fcd34d;
-  background: #fffbeb;
-  color: #92400e;
+  border-color: #ddbe59;
+  background: #faf7ec;
+  color: #7d4523;
 }
 
 .cd-info {
@@ -455,10 +449,10 @@
   align-items: flex-start;
   gap: 0.7rem;
   padding: 0.8rem 1rem;
-  border: 1px solid #bfdbfe;
+  border: 1px solid #c9daf0;
   border-radius: 10px;
-  background: #eff6ff;
-  color: #1e40af;
+  background: #eff4fb;
+  color: #32488f;
   font-size: 0.9rem;
   text-align: left;
 }
@@ -481,7 +475,7 @@
   width: 24px;
   height: 24px;
   border-radius: 999px;
-  background: #2563eb;
+  background: #3865c8;
   color: #ffffff;
 }
 
@@ -542,17 +536,17 @@
   background: var(--blue-100);
   color: var(--blue-700);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .cd-info-warning {
-  border-color: #fcd34d;
-  background: #fffbeb;
-  color: #92400e;
+  border-color: #ddbe59;
+  background: #faf7ec;
+  color: #7d4523;
 }
 
 .cd-info-warning .cd-info-icono {
-  background: #d97706;
+  background: #ac6e25;
 }
 
 .cd-form-embebido {

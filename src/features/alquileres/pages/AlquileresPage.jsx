@@ -211,7 +211,7 @@ export function AlquileresPage() {
                       {aviso && <span className={`al-chip al-chip-${aviso.tono}`}>{aviso.texto}</span>}
                     </td>
                     <td>
-                      <div className="al-principal">{nombreInquilino(inquilino)}</div>
+                      <div className="al-principal dato-clave">{nombreInquilino(inquilino)}</div>
                       {inquilino?.documento && (
                         <span className="al-pildora">
                           {inquilino.tipo_persona === 'juridica' ? 'CUIT' : 'DNI'} {inquilino.documento}

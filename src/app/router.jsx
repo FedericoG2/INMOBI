@@ -10,7 +10,7 @@ import { ContratosPage } from '../features/contratos/pages/ContratosPage';
 import { AlquileresPage } from '../features/alquileres/pages/AlquileresPage';
 import { AumentosPage } from '../features/aumentos/pages/AumentosPage';
 import { ReclamosPage } from '../features/reclamos/pages/ReclamosPage';
-import { ProximamentePage } from '../features/proximamente/ProximamentePage';
+import { MENU_INQUILINO, MENU_PROPIETARIO, RUTAS_INQUILINO, RUTAS_PROPIETARIO } from '../features/portal/rutas';
 import { Layout } from './Layout';
 import { ProtectedRoute } from './ProtectedRoute';
 
@@ -43,36 +43,26 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute roles={[ROL.INQUILINO]}>
         <Layout
-          menu={[{ path: '/portal/inquilino', label: 'Inicio', icon: 'user' }]}
+          menu={MENU_INQUILINO}
           titulo="Portal del inquilino"
           rolLabel="Inquilino"
         />
       </ProtectedRoute>
     ),
-    children: [
-      {
-        index: true,
-        element: <ProximamentePage titulo="Portal del inquilino" texto="Acá vas a consultar tus contratos, pagos y reclamos." />,
-      },
-    ],
+    children: RUTAS_INQUILINO,
   },
   {
     path: '/portal/propietario',
     element: (
       <ProtectedRoute roles={[ROL.PROPIETARIO]}>
         <Layout
-          menu={[{ path: '/portal/propietario', label: 'Inicio', icon: 'building' }]}
+          menu={MENU_PROPIETARIO}
           titulo="Portal del propietario"
           rolLabel="Propietario"
         />
       </ProtectedRoute>
     ),
-    children: [
-      {
-        index: true,
-        element: <ProximamentePage titulo="Portal del propietario" texto="Acá vas a consultar tus propiedades, contratos y cobros." />,
-      },
-    ],
+    children: RUTAS_PROPIETARIO,
   },
   {
     path: '/app',

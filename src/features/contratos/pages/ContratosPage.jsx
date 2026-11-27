@@ -147,7 +147,6 @@ export function ContratosPage() {
             <p className="page-subtitle">Gestión de contratos de alquiler y documentos adjuntos</p>
           </div>
         </div>
-        <Button variant="success" onClick={() => setModalCrear(true)}>Nuevo contrato</Button>
       </div>
 
       <div className="ls-kpis ct-kpis">
@@ -188,6 +187,7 @@ export function ContratosPage() {
             </option>
           ))}
         </select>
+        <Button variant="success" className="btn btn-success btn-medium boton-nuevo" onClick={() => setModalCrear(true)}>Nuevo contrato</Button>
       </div>
 
       {loading && <div className="page-loading">Cargando contratos...</div>}
@@ -235,7 +235,7 @@ export function ContratosPage() {
                       </span>
                     </td>
                     <td>
-                      <div className="ct-principal">{nombreInquilino(inquilino)}</div>
+                      <div className="ct-principal dato-clave">{nombreInquilino(inquilino)}</div>
                       {inquilino?.documento && (
                         <span className="ct-pildora">
                           {inquilino.tipo_persona === 'juridica' ? 'CUIT' : 'DNI'} {inquilino.documento}
@@ -263,7 +263,7 @@ export function ContratosPage() {
                       </div>
                     </td>
                     <td>
-                      <div className="ct-principal ct-importe">{formatearMonto(contrato.monto_actual)}</div>
+                      <div className="ct-principal ct-importe dato-clave">{formatearMonto(contrato.monto_actual)}</div>
                       <div className="ct-secundaria">
                         {montoCambio ? `Inicial: ${formatearMonto(contrato.monto_inicial)}` : 'Monto inicial'}
                       </div>

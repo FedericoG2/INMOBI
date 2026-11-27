@@ -150,7 +150,6 @@ export function CuentasPage() {
           <h1>Cuentas</h1>
           <p className="page-subtitle">Cada cuenta tiene un solo rol. El acceso al portal se habilita al vincular un inquilino o un propietario.</p>
         </div>
-        <Button variant="success" onClick={() => { setErrorAccion(null); setForm({ ...FORM_VACIO }); }}>Nueva cuenta</Button>
       </div>
 
       {error && (
@@ -180,6 +179,10 @@ export function CuentasPage() {
           </article>
         </div>
       )}
+
+      <div className="filtros-container">
+        <Button variant="success" className="btn btn-success btn-medium boton-nuevo" onClick={() => { setErrorAccion(null); setForm({ ...FORM_VACIO }); }}>Nueva cuenta</Button>
+      </div>
 
       {cuentas.length > 0 && (
         <div className="table-container">

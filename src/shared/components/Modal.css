@@ -59,7 +59,7 @@
 .modal-header-rich {
   padding: 1.1rem 1.5rem;
   background: linear-gradient(135deg, var(--blue-100) 0%, var(--blue-50) 45%, #ffffff 100%);
-  border-bottom: 1px solid #dbe7fb;
+  border-bottom: 1px solid #dfe6f3;
 }
 
 .modal-icon {
@@ -72,7 +72,7 @@
   border-radius: 14px;
   background: var(--blue-700);
   color: #ffffff;
-  box-shadow: 0 6px 16px rgba(29, 78, 216, 0.28);
+  box-shadow: 0 6px 16px rgba(55, 87, 175, 0.28);
 }
 
 .modal-subtitle {

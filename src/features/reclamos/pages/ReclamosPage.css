@@ -12,7 +12,7 @@
   border-radius: 16px;
   background: var(--blue-700);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(29, 78, 216, 0.28);
+  box-shadow: 0 8px 20px rgba(55, 87, 175, 0.28);
 }
 
 .rc-kpis {
@@ -38,8 +38,8 @@
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.rc-kpi:hover { border-color: #c9d7f2; }
-.rc-kpi.is-activo { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+.rc-kpi:hover { border-color: #cfd7e8; }
+.rc-kpi.is-activo { border-color: #3865c8; box-shadow: 0 0 0 3px rgba(56, 101, 200, 0.15); }
 
 .rc-kpi-icono {
   display: inline-flex;
@@ -51,17 +51,17 @@
 }
 
 /* Mismos colores que las etiquetas de estado */
-.rc-kpi-pendiente .rc-kpi-icono { background: #fff7ed; color: #b45309; }
-.rc-kpi-en_proceso .rc-kpi-icono { background: #e0f2fe; color: #0369a1; }
-.rc-kpi-revision .rc-kpi-icono { background: #ede9fe; color: #6d28d9; }
-.rc-kpi-resuelto .rc-kpi-icono { background: #dcfce7; color: #166534; }
+.rc-kpi-pendiente .rc-kpi-icono { background: #faf5ee; color: #8f5122; }
+.rc-kpi-en_proceso .rc-kpi-icono { background: #e3eff7; color: #1c6288; }
+.rc-kpi-revision .rc-kpi-icono { background: #edeaf9; color: #6c3fb2; }
+.rc-kpi-resuelto .rc-kpi-icono { background: #e0f4e7; color: #235837; }
 
 .rc-kpi strong { color: #0f172a; font-size: 1.85rem; letter-spacing: -0.04em; line-height: 1; }
-.rc-kpi-titulo { color: #0f172a; font-size: 0.92rem; font-weight: 650; }
+.rc-kpi-titulo { color: #0f172a; font-size: 0.92rem; font-weight: 600; }
 .rc-kpi small { color: var(--muted); font-size: 0.8rem; }
 
 .rc-fila { cursor: pointer; }
-.rc-principal { color: #0f172a; font-weight: 650; }
+.rc-principal { color: #0f172a; font-weight: 400; }
 .rc-secundaria { margin-top: 0.2rem; color: var(--muted); font-size: 0.82rem; }
 .rc-codigo { color: var(--blue-700); }
 .rc-fecha { white-space: nowrap; }

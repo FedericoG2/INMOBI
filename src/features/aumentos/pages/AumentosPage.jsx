@@ -220,9 +220,9 @@ export function AumentosPage() {
                 <th>Inquilino</th>
                 <th>Inmueble</th>
                 <th>Índice</th>
-                <th className="au-num">Monto anterior</th>
+                <th className="au-num">Monto actual</th>
                 <th className="au-centro">Variación</th>
-                <th className="au-num">Monto nuevo</th>
+                <th className="au-num">Monto calculado</th>
                 <th></th>
               </tr>
             </thead>
@@ -245,7 +245,7 @@ export function AumentosPage() {
                     </td>
                     <td className="au-principal">{etiquetaPeriodoAumento(aumento)}</td>
                     <td>
-                      <div className="au-principal">{nombreInquilino(inquilino)}</div>
+                      <div className="au-principal dato-clave">{nombreInquilino(inquilino)}</div>
                       {inquilino?.documento && (
                         <span className="au-pildora">
                           {inquilino.tipo_persona === 'juridica' ? 'CUIT' : 'DNI'} {inquilino.documento}
